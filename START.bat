@@ -1,7 +1,0 @@
-@echo off
-title Ticket Bot
-cd /d "%~dp0"
-if not exist package.json call npm init -y
-if not exist node_modules call npm install discord.js
-node index.js
-pause
