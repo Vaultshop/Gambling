@@ -3,2454 +3,1497 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disney Akcijos</title>
+    <title>qwilzyfamily - Marketplace</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/poppins@5.0.8/index.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5.0.19/index.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Poppins', sans-serif;
             background: #0a0a0a;
             color: #fff;
-            overflow: hidden;
             min-height: 100vh;
         }
 
-        /* ===== LOADING SCREEN ===== */
-        #loadingScreen {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: radial-gradient(ellipse at center, #1a0a0a 0%, #0a0a0a 60%, #050505 100%);
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            z-index: 10000;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-        #loadingScreen.hidden { opacity: 0; visibility: hidden; }
-
-        .loading-logo-container { position: relative; margin-bottom: 30px; }
-
-        .loading-logo {
-            width: 80px; height: 80px;
-            background: linear-gradient(145deg, #ff1a1a, #cc0000);
-            border-radius: 18px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2.2rem; font-weight: 900; color: #fff;
-            font-family: 'Playfair Display', serif;
-            box-shadow: 0 0 40px rgba(255, 30, 30, 0.4), 0 0 80px rgba(255, 30, 30, 0.2);
-            animation: logoPulse 2s ease-in-out infinite;
-            position: relative; z-index: 2;
-        }
-
-        .loading-logo-ring {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100px; height: 100px;
-            border: 2px solid transparent;
-            border-top-color: #ff4444; border-right-color: #ff6600;
-            border-radius: 50%;
-            animation: ringSpin 1.5s linear infinite;
-        }
-
-        .loading-logo-ring2 {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 115px; height: 115px;
-            border: 1px solid transparent;
-            border-bottom-color: rgba(255, 68, 68, 0.3);
-            border-radius: 50%;
-            animation: ringSpin 2.5s linear infinite reverse;
-        }
-
-        @keyframes logoPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-        @keyframes ringSpin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
-
-        .loading-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.8rem; font-weight: 900; letter-spacing: 6px;
-            margin-bottom: 12px; overflow: hidden; white-space: nowrap;
-        }
-
-        .loading-title .char {
-            display: inline-block; opacity: 0; transform: translateY(20px);
-            animation: charReveal 0.4s ease forwards;
-        }
-        .loading-title .char.dim { color: rgba(255, 255, 255, 0.2); }
-        @keyframes charReveal { to { opacity: 1; transform: translateY(0); } }
-
-        .loading-subtitle {
-            font-size: 0.85rem; letter-spacing: 4px;
-            color: rgba(255, 255, 255, 0.5); text-transform: uppercase;
-            margin-bottom: 40px;
-        }
-
-        .loading-bar-container { width: 320px; position: relative; }
-        .loading-bar-bg {
-            width: 100%; height: 3px;
-            background: rgba(255, 255, 255, 0.08); border-radius: 3px; overflow: hidden;
-        }
-        .loading-bar-fill {
-            height: 100%; width: 0%;
-            background: linear-gradient(90deg, #ff1a1a, #ff6600, #ffaa00);
-            border-radius: 3px; transition: width 0.3s ease;
-            box-shadow: 0 0 10px rgba(255, 100, 0, 0.5);
-        }
-        .loading-bar-info {
-            display: flex; justify-content: space-between;
-            margin-top: 12px; font-size: 0.75rem; letter-spacing: 2px;
-        }
-        .loading-percent { color: rgba(255, 255, 255, 0.4); font-weight: 600; }
-        .loading-theme { color: #ff4444; font-weight: 700; text-transform: uppercase; }
-
-        /* ===== MAIN WEBSITE ===== */
-        #mainWebsite {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            opacity: 0; visibility: hidden;
-            transition: opacity 1s ease, visibility 1s ease;
-            overflow-y: auto; overflow-x: hidden;
-        }
-        #mainWebsite.visible { opacity: 1; visibility: visible; }
-
-        #networkCanvas {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%; z-index: 0;
-        }
-
-        /* Top Nav */
+        /* ===== TOP NAVIGATION ===== */
         .top-nav {
-            position: fixed; top: 0; left: 0; right: 0;
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 18px 40px; z-index: 100;
-            background: linear-gradient(180deg, rgba(10,10,10,0.8) 0%, transparent 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 40px;
+            z-index: 1000;
+            background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
         .nav-logo {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 1.2rem; font-weight: 700; letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         .nav-logo-icon {
-            width: 32px; height: 32px;
+            width: 35px;
+            height: 35px;
             background: linear-gradient(145deg, #ff1a1a, #cc0000);
             border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1rem; font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 900;
             font-family: 'Playfair Display', serif;
         }
 
-        .nav-center {
-            display: flex; align-items: center; gap: 4px;
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .control-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
             background: rgba(255,255,255,0.06);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 30px; padding: 5px 6px;
-        }
-
-        .nav-center-item {
-            padding: 10px 22px; font-size: 0.9rem;
-            color: rgba(255,255,255,0.5); border-radius: 24px;
-            cursor: pointer; transition: all 0.3s ease;
-            font-weight: 500; user-select: none;
-        }
-        .nav-center-item:hover { color: rgba(255,255,255,0.8); }
-        .nav-center-item.active {
-            background: rgba(255,255,255,0.12);
-            color: #fff; font-weight: 600;
-        }
-
-        .nav-right { display: flex; align-items: center; gap: 12px; }
-
-        .lang-btn-nav {
-            display: flex; align-items: center; gap: 8px;
-            padding: 10px 18px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 25px; color: #fff;
-            cursor: pointer; font-size: 0.85rem;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.85rem;
             font-family: 'Poppins', sans-serif;
-            transition: all 0.3s ease; position: relative;
+            transition: all 0.3s ease;
         }
-        .lang-btn-nav:hover {
-            background: rgba(255,255,255,0.12);
+
+        .control-btn:hover {
+            background: rgba(255,255,255,0.1);
             border-color: rgba(255,255,255,0.2);
         }
 
-        .lang-dropdown {
-            position: absolute; top: calc(100% + 10px); right: 0;
-            background: rgba(15, 15, 25, 0.97);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 14px; padding: 8px 0;
-            min-width: 200px;
-            opacity: 0; visibility: hidden;
-            transform: translateY(-8px);
-            transition: all 0.3s ease; z-index: 200;
-        }
-        .lang-dropdown.show {
-            opacity: 1; visibility: visible; transform: translateY(0);
+        .control-btn.primary {
+            background: linear-gradient(135deg, #ff1a1a, #cc0000);
+            border: none;
+            font-weight: 600;
         }
 
-        .lang-opt {
-            display: flex; align-items: center; gap: 10px;
-            padding: 10px 18px; cursor: pointer;
+        .control-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 30, 30, 0.4);
+        }
+
+        .control-btn.discord {
+            background: #5865F2;
+            border: none;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: rgba(15, 15, 25, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 8px 0;
+            min-width: 180px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .dropdown.active .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 10px 18px;
+            cursor: pointer;
             transition: all 0.2s ease;
-            font-size: 0.88rem; color: rgba(255,255,255,0.7);
+            font-size: 0.88rem;
+            color: rgba(255,255,255,0.7);
         }
-        .lang-opt:hover {
+
+        .dropdown-item:hover {
             background: rgba(255,255,255,0.08);
-            color: #fff; padding-left: 22px;
-        }
-        .lang-opt.selected {
-            color: #ff4444; background: rgba(255, 68, 68, 0.08);
+            color: #fff;
         }
 
-        /* Auth Button */
-        .auth-btn {
-            display: flex; align-items: center; gap: 8px;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #ff1a1a, #cc0000);
-            border: none; border-radius: 25px;
-            color: #fff; cursor: pointer;
-            font-size: 0.88rem; font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 30, 30, 0.3);
-        }
-        .auth-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(255, 30, 30, 0.5);
+        .dropdown-item.active {
+            color: #ff4444;
+            background: rgba(255, 68, 68, 0.08);
         }
 
-        .user-badge {
-            display: flex; align-items: center; gap: 10px;
-            padding: 6px 14px 6px 6px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 30px; cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .user-badge:hover { background: rgba(255,255,255,0.1); }
-
-        .user-avatar-small {
-            width: 28px; height: 28px;
-            background: linear-gradient(135deg, #ff1a1a, #ff6600);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.75rem; font-weight: 700;
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-top: 80px;
+            padding: 40px;
+            min-height: calc(100vh - 80px);
         }
 
-        /* Hero Section */
-        .hero-section {
-            position: relative; z-index: 1;
-            min-height: 100vh;
-            display: flex; align-items: center;
-            padding: 0 60px;
-        }
-
-        .hero-left { flex: 1; max-width: 600px; }
-
-        .hero-title {
+        .page-title {
             font-family: 'Playfair Display', serif;
-            font-size: 4.5rem; font-weight: 700; line-height: 1.1;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #fff, rgba(255,255,255,0.7));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .hero-desc {
-            font-size: 1.1rem; color: rgba(255,255,255,0.5);
-            line-height: 1.8; margin-bottom: 35px; max-width: 520px;
+        /* ===== PRODUCT GRID ===== */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
         }
 
-        .hero-buttons { display: flex; gap: 15px; align-items: center; }
-
-        .btn-primary {
-            display: flex; align-items: center; gap: 8px;
-            padding: 14px 28px;
-            background: linear-gradient(135deg, #ff1a1a, #cc0000);
-            border: none; border-radius: 30px; color: #fff;
-            font-size: 0.95rem; font-weight: 600; cursor: pointer;
-            font-family: 'Poppins', sans-serif;
+        .product-card {
+            background: linear-gradient(145deg, rgba(20, 15, 18, 0.6), rgba(12, 10, 12, 0.8));
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            overflow: hidden;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(255, 30, 30, 0.3);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 30, 30, 0.5);
+            position: relative;
         }
 
-        .btn-secondary {
-            display: flex; align-items: center; gap: 8px;
-            padding: 14px 28px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 30px; color: rgba(255,255,255,0.8);
-            font-size: 0.95rem; cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            transition: all 0.3s ease;
-        }
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.1); color: #fff;
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 68, 68, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .hero-right { flex: 1; display: flex; justify-content: flex-end; align-items: center; }
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
 
-        .time-panel {
-            background: rgba(255,255,255,0.04);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 24px; padding: 40px 50px;
-            text-align: center; position: relative; overflow: hidden;
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,26,26,0.1), rgba(204,0,0,0.1));
         }
-        .time-panel::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #ff4444, #ff8800, transparent);
+
+        .product-info {
+            padding: 20px;
         }
-        .time-panel-label {
-            font-size: 0.75rem; letter-spacing: 4px;
-            text-transform: uppercase; color: rgba(255,255,255,0.4);
+
+        .product-category {
+            font-size: 0.75rem;
+            color: #ff4444;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.5;
             margin-bottom: 15px;
         }
-        .time-panel-clock {
-            font-size: 4rem; font-weight: 700;
-            font-family: 'Poppins', sans-serif; letter-spacing: 4px;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #fff, rgba(255,255,255,0.6));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .time-panel-date { font-size: 0.9rem; color: rgba(255,255,255,0.4); margin-bottom: 5px; }
-        .time-panel-flag { font-size: 1.5rem; margin-top: 10px; }
 
-        /* ===== FOOTER ===== */
-        .footer-section {
-            position: relative; z-index: 1;
-            background: linear-gradient(180deg, transparent 0%, rgba(10,10,10,0.95) 20%, #0a0a0a 100%);
-            padding: 80px 60px 40px; margin-top: -50px;
+        .product-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr;
-            gap: 60px; max-width: 1400px; margin: 0 auto;
-        }
-
-        .footer-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-
-        .footer-brand-icon {
-            width: 50px; height: 50px;
-            background: linear-gradient(145deg, #ff1a1a, #cc0000);
-            border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.4rem; font-weight: 900;
-            font-family: 'Playfair Display', serif;
-            box-shadow: 0 4px 20px rgba(255, 30, 30, 0.3);
-        }
-
-        .footer-brand-text h3 { font-size: 1.1rem; font-weight: 800; letter-spacing: 1px; }
-        .footer-brand-text h3 span { color: #ff4444; }
-        .footer-brand-text p {
-            font-size: 0.7rem; letter-spacing: 3px;
-            color: rgba(255,255,255,0.3); text-transform: uppercase;
-        }
-
-        .footer-brand-desc {
-            font-size: 0.88rem; color: rgba(255,255,255,0.4);
-            line-height: 1.7; margin-bottom: 25px;
-        }
-
-        .footer-socials { display: flex; gap: 10px; }
-
-        .footer-social-icon {
-            width: 42px; height: 42px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.1rem; cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .footer-social-icon:hover {
-            background: rgba(255,255,255,0.1); transform: translateY(-3px);
-        }
-
-        .footer-col h4 {
-            font-size: 0.95rem; font-weight: 700; letter-spacing: 2px;
-            text-transform: uppercase; margin-bottom: 18px;
-            position: relative; padding-bottom: 10px;
-        }
-        .footer-col h4::after {
-            content: ''; position: absolute; bottom: 0; left: 0;
-            width: 30px; height: 2px;
-            background: linear-gradient(90deg, #ff4444, #ff8800);
-            border-radius: 2px;
-        }
-
-        .footer-col-item {
-            display: flex; align-items: center; gap: 10px;
-            padding: 8px 0; font-size: 0.9rem;
-            color: rgba(255,255,255,0.45); cursor: pointer;
-            transition: all 0.25s ease;
-        }
-        .footer-col-item:hover {
-            color: rgba(255,255,255,0.85); padding-left: 6px;
-        }
-        .footer-col-item .fi { font-size: 1rem; width: 22px; text-align: center; flex-shrink: 0; }
-        .footer-col-item a { color: inherit; text-decoration: none; transition: color 0.3s; }
-        .footer-col-item a:hover { color: #ff4444; }
-
-        .footer-status {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 10px 20px;
-            background: rgba(0, 200, 100, 0.08);
-            border: 1px solid rgba(0, 200, 100, 0.2);
-            border-radius: 25px; margin-top: 20px;
-        }
-        .footer-status-dot {
-            width: 8px; height: 8px; background: #00c864;
-            border-radius: 50%; animation: statusPulse 2s ease-in-out infinite;
-        }
-        @keyframes statusPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        .footer-status-text {
-            font-size: 0.8rem; font-weight: 700; letter-spacing: 2px;
-            color: #00c864; text-transform: uppercase;
-        }
-
-        .footer-bottom {
-            max-width: 1400px; margin: 50px auto 0;
-            padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.06);
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 0.8rem; color: rgba(255,255,255,0.25);
-        }
-
-        /* ===== AUTH MODAL ===== */
-        .auth-overlay {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(15px);
-            z-index: 6000;
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; visibility: hidden;
-            transition: all 0.4s ease;
-        }
-        .auth-overlay.show { opacity: 1; visibility: visible; }
-
-        .auth-modal {
-            background: linear-gradient(145deg, #1a1a2e, #0f0f1a);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 24px;
-            padding: 45px 50px;
-            max-width: 440px; width: 92%;
-            position: relative;
-            transform: translateY(30px) scale(0.95);
-            transition: transform 0.4s ease;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
-        }
-        .auth-overlay.show .auth-modal { transform: translateY(0) scale(1); }
-
-        .auth-close {
-            position: absolute; top: 18px; right: 20px;
-            width: 36px; height: 36px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 1rem;
-            color: rgba(255,255,255,0.6);
-            transition: all 0.3s ease;
-        }
-        .auth-close:hover {
-            background: rgba(255, 30, 30, 0.15);
-            border-color: rgba(255, 30, 30, 0.3);
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
             color: #ff4444;
         }
 
-        .auth-brand {
-            display: flex; align-items: center; gap: 10px;
-            margin-bottom: 25px;
-        }
-
-        .auth-brand-icon {
-            width: 36px; height: 36px;
-            background: linear-gradient(145deg, #ff1a1a, #cc0000);
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.1rem; font-weight: 900;
-            font-family: 'Playfair Display', serif;
-        }
-
-        .auth-brand-name {
-            font-size: 0.85rem; font-weight: 700;
-            letter-spacing: 3px; color: rgba(255,255,255,0.6);
-            text-transform: uppercase;
-        }
-
-        .auth-title {
-            font-size: 2rem; font-weight: 700;
-            margin-bottom: 8px; color: #fff;
-        }
-
-        .auth-subtitle {
-            font-size: 0.9rem; color: rgba(255,255,255,0.5);
-            margin-bottom: 30px;
-        }
-
-        .auth-input-group { position: relative; margin-bottom: 18px; }
-
-        .auth-input {
-            width: 100%;
-            padding: 16px 20px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 14px;
-            color: #fff; font-size: 0.95rem;
-            font-family: 'Poppins', sans-serif;
-            transition: all 0.3s ease; outline: none;
-        }
-        .auth-input::placeholder { color: rgba(255,255,255,0.35); }
-        .auth-input:focus {
-            border-color: rgba(255, 68, 68, 0.4);
-            background: rgba(255,255,255,0.08);
-            box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.1);
-        }
-
-        .auth-input-icon {
-            position: absolute; right: 16px; top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255,255,255,0.4);
-            cursor: pointer; font-size: 1.1rem;
-            transition: color 0.3s;
-        }
-        .auth-input-icon:hover { color: rgba(255,255,255,0.7); }
-
-        .auth-options {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 22px; font-size: 0.85rem;
-        }
-
-        .auth-checkbox {
-            display: flex; align-items: center; gap: 8px;
-            color: rgba(255,255,255,0.6); cursor: pointer;
-        }
-        .auth-checkbox input[type="checkbox"] {
-            width: 16px; height: 16px;
-            accent-color: #ff4444; cursor: pointer;
-        }
-
-        .auth-forgot {
-            color: rgba(255,255,255,0.6);
-            text-decoration: none; cursor: pointer;
-            transition: color 0.3s;
-        }
-        .auth-forgot:hover { color: #ff4444; }
-
-        .auth-submit {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #ff4444, #cc0000);
-            border: none; border-radius: 14px;
-            color: #fff; font-size: 1rem; font-weight: 700;
-            cursor: pointer; font-family: 'Poppins', sans-serif;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(255, 68, 68, 0.3);
-            margin-bottom: 20px;
-        }
-        .auth-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 68, 68, 0.5);
-        }
-        .auth-submit:active { transform: translateY(0); }
-
-        .auth-divider {
-            display: flex; align-items: center; gap: 15px;
-            margin-bottom: 20px;
-        }
-        .auth-divider::before, .auth-divider::after {
-            content: ''; flex: 1; height: 1px;
-            background: rgba(255,255,255,0.1);
-        }
-        .auth-divider span {
-            font-size: 0.8rem; color: rgba(255,255,255,0.4);
-        }
-
-        .auth-switch {
-            text-align: center;
-            font-size: 0.88rem; color: rgba(255,255,255,0.5);
-        }
-        .auth-switch a {
-            color: #ff4444; text-decoration: none;
-            font-weight: 600; cursor: pointer;
-            transition: color 0.3s;
-        }
-        .auth-switch a:hover { color: #ff6666; }
-
-        .auth-error {
-            background: rgba(255, 68, 68, 0.1);
-            border: 1px solid rgba(255, 68, 68, 0.3);
-            border-radius: 10px;
-            padding: 12px 16px;
-            margin-bottom: 18px;
-            font-size: 0.85rem;
-            color: #ff6666;
-            display: none;
-        }
-        .auth-error.show { display: block; }
-
-        .auth-success {
-            background: rgba(0, 200, 100, 0.1);
-            border: 1px solid rgba(0, 200, 100, 0.3);
-            border-radius: 10px;
-            padding: 12px 16px;
-            margin-bottom: 18px;
-            font-size: 0.85rem;
-            color: #00c864;
-            display: none;
-        }
-        .auth-success.show { display: block; }
-
-        /* ===== DASHBOARD ===== */
-        #dashboardView {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0a0a1a 100%);
-            z-index: 7000;
-            opacity: 0; visibility: hidden;
-            transition: all 0.5s ease;
-            overflow-y: auto;
-        }
-        #dashboardView.show { opacity: 1; visibility: visible; }
-
-        .dashboard-nav {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 20px 40px;
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .dashboard-logo {
-            display: flex; align-items: center; gap: 12px;
-            font-size: 1.3rem; font-weight: 700;
-        }
-
-        .dashboard-user {
-            display: flex; align-items: center; gap: 15px;
-        }
-
-        .dashboard-user-info { text-align: right; }
-        .dashboard-user-name { font-size: 0.95rem; font-weight: 600; }
-        .dashboard-user-email { font-size: 0.78rem; color: rgba(255,255,255,0.5); }
-
-        .logout-btn {
+        .add-to-cart-btn {
             padding: 10px 20px;
-            background: rgba(255, 68, 68, 0.15);
-            border: 1px solid rgba(255, 68, 68, 0.3);
-            border-radius: 20px;
-            color: #ff4444; font-size: 0.85rem;
-            font-weight: 600; cursor: pointer;
-            font-family: 'Poppins', sans-serif;
+            background: rgba(255,68,68,0.1);
+            border: 1px solid rgba(255,68,68,0.3);
+            border-radius: 8px;
+            color: #ff4444;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
             transition: all 0.3s ease;
         }
-        .logout-btn:hover { background: rgba(255, 68, 68, 0.25); }
 
-        .dashboard-content {
-            max-width: 1200px; margin: 0 auto;
-            padding: 50px 40px;
+        .add-to-cart-btn:hover {
+            background: rgba(255,68,68,0.2);
+            transform: scale(1.05);
         }
 
-        .dashboard-welcome { margin-bottom: 50px; }
-
-        .dashboard-welcome h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem; font-weight: 700;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #fff, rgba(255,255,255,0.7));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .add-to-cart-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .dashboard-welcome p {
-            font-size: 1.1rem; color: rgba(255,255,255,0.5);
+        .login-prompt {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+            margin-top: 10px;
         }
 
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px; margin-bottom: 40px;
-        }
-
-        .dashboard-card {
-            background: rgba(255,255,255,0.04);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 20px; padding: 30px;
-            transition: all 0.3s ease;
-        }
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 68, 68, 0.3);
-            background: rgba(255,255,255,0.06);
-        }
-
-        .dashboard-card-icon {
-            width: 50px; height: 50px;
-            background: linear-gradient(135deg, #ff1a1a, #cc0000);
-            border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; margin-bottom: 20px;
-        }
-
-        .dashboard-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
-        .dashboard-card p { font-size: 0.9rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
-
-        .dashboard-card .stat-value {
-            font-size: 2rem; font-weight: 700;
-            color: #ff4444; margin: 10px 0;
-        }
-
-        .dashboard-card .stat-label {
-            font-size: 0.8rem; color: rgba(255,255,255,0.4);
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        .dashboard-section-title {
-            font-size: 1.5rem; font-weight: 700;
-            margin-bottom: 20px; margin-top: 20px;
-        }
-
-        .dashboard-activity {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 20px; padding: 30px;
-        }
-
-        .activity-item {
-            display: flex; align-items: center; gap: 15px;
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .activity-item:last-child { border-bottom: none; }
-
-        .activity-icon {
-            width: 40px; height: 40px;
-            background: rgba(255, 68, 68, 0.1);
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.1rem;
-        }
-
-        .activity-text { flex: 1; }
-        .activity-text h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 3px; }
-        .activity-text p { font-size: 0.8rem; color: rgba(255,255,255,0.4); }
-        .activity-time { font-size: 0.78rem; color: rgba(255,255,255,0.4); }
-
-        /* ===== RULE MODALS ===== */
+        /* ===== MODALS ===== */
         .modal-overlay {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.88);
-            backdrop-filter: blur(12px);
-            z-index: 5000;
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; visibility: hidden;
-            transition: all 0.4s ease;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
-        .modal-overlay.show { opacity: 1; visibility: visible; }
 
-        .modal-content {
-            background: linear-gradient(145deg, #111118, #0a0a10);
-            border: 1px solid rgba(255,255,255,0.06);
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: linear-gradient(145deg, #12121a, #0d0d14);
+            border: 1px solid rgba(255,255,255,0.08);
             border-radius: 24px;
-            padding: 50px 60px;
-            max-width: 850px; width: 92%;
-            max-height: 88vh; overflow-y: auto;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
             position: relative;
-            transform: translateY(30px) scale(0.95);
-            transition: transform 0.4s ease;
+            animation: modalSlide 0.3s ease;
         }
-        .modal-overlay.show .modal-content { transform: translateY(0) scale(1); }
 
-        .modal-content::-webkit-scrollbar { width: 5px; }
-        .modal-content::-webkit-scrollbar-track { background: transparent; }
-        .modal-content::-webkit-scrollbar-thumb {
-            background: rgba(255,68,68,0.2); border-radius: 3px;
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .modal-close {
-            position: absolute; top: 20px; right: 25px;
-            width: 40px; height: 40px;
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            width: 40px;
+            height: 40px;
             background: rgba(255,255,255,0.06);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
             color: rgba(255,255,255,0.6);
-            transition: all 0.3s ease; z-index: 10;
+            transition: all 0.3s ease;
         }
+
         .modal-close:hover {
             background: rgba(255, 30, 30, 0.15);
             border-color: rgba(255, 30, 30, 0.3);
             color: #ff4444;
         }
 
-        .modal-header {
-            display: flex; align-items: center; gap: 15px;
-            margin-bottom: 35px; padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-
-        .modal-header-icon {
-            width: 55px; height: 55px;
-            background: linear-gradient(145deg, #ff1a1a, #cc0000);
-            border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; font-weight: 900;
+        .modal-title {
             font-family: 'Playfair Display', serif;
-            box-shadow: 0 4px 25px rgba(255, 30, 30, 0.3);
-            flex-shrink: 0;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .modal-header-text h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem; font-weight: 700; margin-bottom: 4px;
-        }
-        .modal-header-text p {
-            font-size: 0.78rem; letter-spacing: 3px;
-            color: rgba(255,255,255,0.35); text-transform: uppercase;
+        .form-group {
+            margin-bottom: 20px;
         }
 
-        .rule-card {
-            background: linear-gradient(145deg, rgba(20,15,15,0.9), rgba(12,10,10,0.95));
-            border: 1px solid rgba(255, 68, 68, 0.12);
-            border-radius: 18px; padding: 30px 35px;
-            margin-bottom: 22px; position: relative; overflow: hidden;
-            transition: border-color 0.3s ease;
-        }
-        .rule-card:hover { border-color: rgba(255, 68, 68, 0.25); }
-        .rule-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 68, 68, 0.3), transparent);
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            font-weight: 500;
         }
 
-        .rule-card-header {
-            display: flex; align-items: center; gap: 16px; margin-bottom: 18px;
-        }
-
-        .rule-number {
-            width: 42px; height: 42px;
-            background: linear-gradient(145deg, #ff1a1a, #cc0000);
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.95rem; font-weight: 800; color: #fff;
-            flex-shrink: 0; box-shadow: 0 4px 15px rgba(255, 30, 30, 0.25);
-        }
-
-        .rule-card-title { font-size: 1.2rem; font-weight: 700; color: #fff; }
-
-        .rule-card-body { padding-left: 58px; }
-        .rule-card-body p {
-            font-size: 0.92rem; color: rgba(255,255,255,0.55);
-            line-height: 1.8; margin-bottom: 12px;
-        }
-        .rule-card-body p strong { color: rgba(255,255,255,0.85); }
-        .rule-card-body ul { list-style: none; padding: 0; margin: 12px 0; }
-        .rule-card-body ul li {
-            font-size: 0.9rem; color: rgba(255,255,255,0.5);
-            padding: 6px 0 6px 20px; position: relative; line-height: 1.6;
-        }
-        .rule-card-body ul li::before {
-            content: '•'; position: absolute; left: 0;
-            color: #ff4444; font-weight: 700;
-        }
-
-        .rule-highlight {
-            background: rgba(255, 68, 68, 0.06);
-            border: 1px solid rgba(255, 68, 68, 0.15);
-            border-radius: 12px; padding: 18px 22px; margin: 16px 0;
-        }
-        .rule-highlight p {
-            padding-left: 0 !important;
-            color: rgba(255,255,255,0.7) !important;
-            font-size: 0.92rem !important; margin-bottom: 0 !important;
-        }
-
-        .rule-agreement {
-            background: linear-gradient(135deg, rgba(255, 68, 68, 0.08), rgba(255, 100, 0, 0.05));
-            border: 1px solid rgba(255, 68, 68, 0.2);
-            border-radius: 12px; padding: 18px 22px;
-            margin-top: 20px; text-align: center;
-        }
-        .rule-agreement p {
-            color: rgba(255,255,255,0.75) !important;
-            font-weight: 600; font-size: 0.9rem !important;
-            margin-bottom: 0 !important;
-        }
-
-        .example-box {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px; padding: 20px 24px; margin: 16px 0;
-        }
-        .example-box p { margin-bottom: 8px; }
-        .example-box p:last-child { margin-bottom: 0; }
-        .example-box strong { color: #ff6644 !important; }
-
-        /* ===== ABOUT MODAL ===== */
-        .about-overlay {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(10px);
-            z-index: 5000;
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; visibility: hidden;
-            transition: all 0.4s ease;
-        }
-        .about-overlay.show { opacity: 1; visibility: visible; }
-
-        .about-modal {
-            background: linear-gradient(145deg, #12121a, #0d0d14);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 24px;
-            padding: 50px 60px;
-            max-width: 750px; width: 90%;
-            max-height: 85vh; overflow-y: auto;
-            position: relative;
-            transform: translateY(30px) scale(0.95);
-            transition: transform 0.4s ease;
-        }
-        .about-overlay.show .about-modal { transform: translateY(0) scale(1); }
-        .about-modal::-webkit-scrollbar { width: 6px; }
-        .about-modal::-webkit-scrollbar-track { background: transparent; }
-        .about-modal::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.1); border-radius: 3px;
-        }
-
-        .about-close {
-            position: absolute; top: 20px; right: 25px;
-            width: 40px; height: 40px;
-            background: rgba(255,255,255,0.06);
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 1.2rem;
-            color: rgba(255,255,255,0.6);
+            border-radius: 10px;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
             transition: all 0.3s ease;
         }
-        .about-close:hover {
-            background: rgba(255, 30, 30, 0.15);
-            border-color: rgba(255, 30, 30, 0.3);
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #ff4444;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff1a1a, #cc0000);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 30, 30, 0.4);
+        }
+
+        /* ===== ADMIN PANEL ===== */
+        .admin-dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .admin-sidebar {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 20px;
+            height: fit-content;
+        }
+
+        .admin-menu-item {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-menu-item:hover, .admin-menu-item.active {
+            background: rgba(255,68,68,0.1);
             color: #ff4444;
         }
 
-        .about-header {
-            display: flex; align-items: center; gap: 15px; margin-bottom: 30px;
+        .admin-content {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 30px;
         }
-        .about-header-icon {
-            width: 55px; height: 55px;
-            background: linear-gradient(145deg, #ff1a1a, #cc0000);
-            border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; font-weight: 900;
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .data-table th, .data-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .data-table th {
+            color: rgba(255,255,255,0.5);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-active {
+            background: rgba(0,200,100,0.1);
+            color: #00c864;
+            border: 1px solid rgba(0,200,100,0.2);
+        }
+
+        .status-blocked {
+            background: rgba(255,68,68,0.1);
+            color: #ff4444;
+            border: 1px solid rgba(255,68,68,0.2);
+        }
+
+        .status-frozen {
+            background: rgba(255,140,0,0.1);
+            color: #ff8800;
+            border: 1px solid rgba(255,140,0,0.2);
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn.block {
+            background: rgba(255,68,68,0.1);
+            color: #ff4444;
+            border: 1px solid rgba(255,68,68,0.2);
+        }
+
+        .action-btn.freeze {
+            background: rgba(255,140,0,0.1);
+            color: #ff8800;
+            border: 1px solid rgba(255,140,0,0.2);
+        }
+
+        .action-btn.unblock {
+            background: rgba(0,200,100,0.1);
+            color: #00c864;
+            border: 1px solid rgba(0,200,100,0.2);
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* ===== BAN APPEAL ===== */
+        .ban-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 3000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .ban-screen.active {
+            display: flex;
+        }
+
+        .ban-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .ban-title {
             font-family: 'Playfair Display', serif;
-            box-shadow: 0 4px 25px rgba(255, 30, 30, 0.3);
-        }
-        .about-header-text h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem; font-weight: 700; margin-bottom: 4px;
-        }
-        .about-header-text p {
-            font-size: 0.8rem; letter-spacing: 3px;
-            color: rgba(255,255,255,0.35); text-transform: uppercase;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #ff4444;
         }
 
-        .about-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,68,68,0.3), transparent);
-            margin: 25px 0;
+        .ban-message {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 30px;
+            max-width: 500px;
+            line-height: 1.6;
         }
 
-        .about-section { margin-bottom: 28px; }
-        .about-section h3 {
-            font-size: 1.1rem; font-weight: 700; margin-bottom: 12px;
-            display: flex; align-items: center; gap: 10px; color: #fff;
-        }
-        .about-section h3 .emoji { font-size: 1.3rem; }
-        .about-section p {
-            font-size: 0.95rem; color: rgba(255,255,255,0.55);
-            line-height: 1.8; padding-left: 32px;
-        }
-        .about-section ul { list-style: none; padding-left: 32px; }
-        .about-section ul li {
-            font-size: 0.92rem; color: rgba(255,255,255,0.5);
-            padding: 5px 0; padding-left: 18px; position: relative; line-height: 1.6;
-        }
-        .about-section ul li::before {
-            content: '›'; position: absolute; left: 0;
-            color: #ff4444; font-weight: 700;
+        .appeal-btn {
+            padding: 15px 40px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 30px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .about-highlight {
-            background: rgba(255, 68, 68, 0.06);
-            border: 1px solid rgba(255, 68, 68, 0.15);
-            border-radius: 14px; padding: 20px 25px; margin: 20px 0;
-        }
-        .about-highlight p {
-            padding-left: 0 !important;
-            color: rgba(255,255,255,0.7) !important;
-            font-size: 0.95rem !important;
+        .appeal-btn:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
         }
 
-        .about-footer-note {
-            text-align: center; margin-top: 30px;
-            padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06);
-            font-size: 0.82rem; color: rgba(255,255,255,0.3);
-        }
-        .about-footer-note a { color: #ff4444; text-decoration: none; }
-        .about-footer-note a:hover { text-decoration: underline; }
-
-        @media (max-width: 1024px) {
-            .hero-section { flex-direction: column; padding: 120px 30px 60px; text-align: center; }
-            .hero-left { max-width: 100%; }
-            .hero-title { font-size: 3rem; }
-            .hero-desc { margin: 0 auto 30px; }
-            .hero-buttons { justify-content: center; }
-            .hero-right { justify-content: center; margin-top: 40px; }
-            .footer-grid { grid-template-columns: 1fr 1fr; }
-            .nav-center { display: none; }
+        /* ===== CART ===== */
+        .cart-icon {
+            position: relative;
         }
 
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff4444;
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .hero-title { font-size: 2.2rem; }
-            .time-panel-clock { font-size: 2.5rem; }
-            .time-panel { padding: 25px 30px; }
-            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
-            .top-nav { padding: 15px 20px; }
-            .footer-section { padding: 60px 20px 30px; }
-            .modal-content { padding: 35px 25px; }
-            .rule-card { padding: 22px 20px; }
-            .rule-card-body { padding-left: 0; margin-top: 10px; }
-            .rule-number { width: 36px; height: 36px; font-size: 0.85rem; }
-            .modal-header-text h2 { font-size: 1.4rem; }
-            .about-modal { padding: 35px 25px; }
-            .about-header-text h2 { font-size: 1.4rem; }
-            .auth-modal { padding: 35px 25px; }
-            .dashboard-content { padding: 30px 20px; }
-            .dashboard-welcome h1 { font-size: 2rem; }
-            .dashboard-nav { padding: 15px 20px; }
+            .top-nav {
+                padding: 15px 20px;
+            }
+            .nav-controls {
+                gap: 8px;
+            }
+            .control-btn span {
+                display: none;
+            }
+            .main-content {
+                padding: 20px;
+            }
+            .admin-dashboard {
+                grid-template-columns: 1fr;
+            }
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
-        @media (max-width: 480px) {
-            .hero-buttons { flex-direction: column; }
-            .nav-right { gap: 8px; }
-            .auth-btn { padding: 8px 14px; font-size: 0.8rem; }
-            .lang-btn-nav { padding: 8px 12px; font-size: 0.78rem; }
-        }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <!-- LOADING SCREEN -->
-    <div id="loadingScreen">
-        <div class="loading-logo-container">
-            <div class="loading-logo-ring2"></div>
-            <div class="loading-logo-ring"></div>
-            <div class="loading-logo">D</div>
-        </div>
-        <div class="loading-title" id="loadingTitle"></div>
-        <div class="loading-subtitle" id="loadingSubtitle"></div>
-        <div class="loading-bar-container">
-            <div class="loading-bar-bg">
-                <div class="loading-bar-fill" id="loadingBarFill"></div>
-            </div>
-            <div class="loading-bar-info">
-                <span class="loading-percent" id="loadingPercent">0%</span>
-                <span class="loading-theme">INFERNO</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- MAIN WEBSITE -->
-    <div id="mainWebsite">
-        <canvas id="networkCanvas"></canvas>
-
-        <nav class="top-nav">
+    <!-- TOP NAVIGATION -->
+    <nav class="top-nav">
+        <div class="nav-left">
             <div class="nav-logo">
-                <div class="nav-logo-icon">D</div>
-                <span>Disney Akcijos</span>
+                <div class="nav-logo-icon">Q</div>
+                <span>qwilzyfamily</span>
             </div>
-            <div class="nav-center">
-                <div class="nav-center-item active" data-nav="home" onclick="navTo('home')" data-i18n="navHome">Pradžia</div>
-                <div class="nav-center-item" data-nav="about" onclick="navTo('about')" data-i18n="navAbout">Apie mus</div>
-                <div class="nav-center-item" data-nav="contact" onclick="navTo('contact')" data-i18n="navContact">Kontaktai</div>
-            </div>
-            <div class="nav-right">
-                <div class="lang-btn-nav" id="langBtnNav" onclick="toggleLangDropdown()">
+        </div>
+        
+        <div class="nav-controls">
+            <!-- Language Selector -->
+            <div class="dropdown" id="langDropdown">
+                <button class="control-btn" onclick="toggleDropdown('langDropdown')">
                     <span>🌐</span>
-                    <span id="currentLangNav">Lietuvių</span>
-                    <span style="font-size:0.7rem">▼</span>
-                    <div class="lang-dropdown" id="langDropdownNav">
-                        <div class="lang-opt selected" data-lang="lt" onclick="changeLang('lt')">🇱🇹 Lietuvių</div>
-                        <div class="lang-opt" data-lang="de" onclick="changeLang('de')">🇪 Deutsch</div>
-                        <div class="lang-opt" data-lang="en" onclick="changeLang('en')">🇬🇧 English</div>
-                        <div class="lang-opt" data-lang="it" onclick="changeLang('it')">🇮🇹 Italiano</div>
-                        <div class="lang-opt" data-lang="ru" onclick="changeLang('ru')">🇷 Русский</div>
-                        <div class="lang-opt" data-lang="fr" onclick="changeLang('fr')">🇫🇷 Français</div>
-                        <div class="lang-opt" data-lang="lv" onclick="changeLang('lv')">🇻 Latviešu</div>
-                        <div class="lang-opt" data-lang="et" onclick="changeLang('et')">🇪 Eesti</div>
-                    </div>
-                </div>
-                <button class="auth-btn" id="authBtnNav" onclick="openAuth('login')">
-                    <span>👤</span>
-                    <span data-i18n="authBtn">Prisijungti</span>
+                    <span id="currentLang">LT</span>
                 </button>
-            </div>
-        </nav>
-
-        <section class="hero-section" id="heroSection">
-            <div class="hero-left">
-                <h1 class="hero-title" data-i18n="heroTitle">Disney Akcijos</h1>
-                <p class="hero-desc" data-i18n="heroDesc">Geriausi Disney pasiūlymai, nuolaidos ir specialios akcijos vienoje vietoje. Atraskite magiją ir sutaupykite.</p>
-                <div class="hero-buttons">
-                    <button class="btn-primary" onclick="navTo('about')" data-i18n="btnStart">Sužinoti daugiau <span>→</span></button>
-                    <button class="btn-secondary" onclick="navTo('contact')" data-i18n="btnMore">Susisiekti</button>
-                </div>
-            </div>
-            <div class="hero-right">
-                <div class="time-panel">
-                    <div class="time-panel-label" data-i18n="timeLabel">Lietuvos laikas</div>
-                    <div class="time-panel-clock" id="timeClock">--:--:--</div>
-                    <div class="time-panel-date" id="timeDate">----</div>
-                    <div class="time-panel-flag">🇱</div>
-                </div>
-            </div>
-        </section>
-
-        <footer class="footer-section" id="footerSection">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <div class="footer-brand">
-                        <div class="footer-brand-icon">D</div>
-                        <div class="footer-brand-text">
-                            <h3>DISNEY<span>AKCIJOS</span></h3>
-                            <p>Digital Market</p>
-                        </div>
-                    </div>
-                    <p class="footer-brand-desc" data-i18n="footerDesc">Greita, saugi ir patikima skaitmeninių produktų platforma. Tūkstančiai patenkintų klientų nuo 2026 metų.</p>
-                    <div class="footer-socials">
-                        <div class="footer-social-icon">🎮</div>
-                        <div class="footer-social-icon">🎵</div>
-                        <div class="footer-social-icon">📷</div>
-                    </div>
-                </div>
-
-                <div class="footer-col">
-                    <h4 data-i18n="footerRules">Taisyklės</h4>
-                    <div class="footer-col-item" onclick="openModal('rules')">
-                        <span class="fi">📋</span>
-                        <span data-i18n="rule1">Taisyklės</span>
-                    </div>
-                    <div class="footer-col-item" onclick="openModal('buy')">
-                        <span class="fi">🛒</span>
-                        <span data-i18n="rule2">Kaip įsigyti akcijas</span>
-                    </div>
-                    <div class="footer-col-item" onclick="openModal('use')">
-                        <span class="fi">⚡</span>
-                        <span data-i18n="rule3">Kaip jas naudoti</span>
-                    </div>
-                    <div class="footer-col-item" onclick="openModal('manage')">
-                        <span class="fi">🔧</span>
-                        <span data-i18n="rule4">Kaip jomis naudotis</span>
-                    </div>
-                </div>
-
-                <div class="footer-col">
-                    <h4 data-i18n="footerContacts">Kontaktai</h4>
-                    <div class="footer-col-item">
-                        <span class="fi"></span>
-                        <a href="tel:+37061691510">+370 616 91510</a>
-                    </div>
-                    <div class="footer-col-item">
-                        <span class="fi">📧</span>
-                        <a href="mailto:andriusdruskys@gmail.com">andriusdruskys@gmail.com</a>
-                    </div>
-                    <div class="footer-status">
-                        <div class="footer-status-dot"></div>
-                        <span class="footer-status-text" data-i18n="footerOnline">Visada aktyvūs</span>
-                    </div>
+                <div class="dropdown-menu">
+                    <div class="dropdown-item active" onclick="changeLang('lt')">🇱 Lietuvių</div>
+                    <div class="dropdown-item" onclick="changeLang('de')">🇩🇪 Deutsch</div>
+                    <div class="dropdown-item" onclick="changeLang('en')">🇬🇧 English</div>
                 </div>
             </div>
 
-            <div class="footer-bottom">
-                <span>© 2026 Disney Akcijos. <span data-i18n="footerRights">Visos teisės saugomos.</span></span>
-                <span>Made with ❤️</span>
+            <!-- Currency Selector -->
+            <div class="dropdown" id="currencyDropdown">
+                <button class="control-btn" onclick="toggleDropdown('currencyDropdown')">
+                    <span>💶</span>
+                    <span id="currentCurrency">EUR</span>
+                </button>
+                <div class="dropdown-menu">
+                    <div class="dropdown-item active" onclick="changeCurrency('EUR')">💶 EUR</div>
+                    <div class="dropdown-item" onclick="changeCurrency('USD')">💵 USD</div>
+                </div>
             </div>
-        </footer>
+
+            <!-- Cart -->
+            <button class="control-btn cart-icon" onclick="openCart()">
+                <span>🛒</span>
+                <span id="cartCount" class="cart-count hidden">0</span>
+            </button>
+
+            <!-- Login/Register -->
+            <button class="control-btn primary" id="authBtn" onclick="openAuthModal()">
+                <span></span>
+                <span id="authText">Prisijungti</span>
+            </button>
+
+            <!-- Discord -->
+            <button class="control-btn discord" onclick="window.open('https://discord.gg/qwilzyfamily', '_blank')">
+                <span></span>
+                <span>Discord</span>
+            </button>
+
+            <!-- Admin Panel (only for admin) -->
+            <button class="control-btn hidden" id="adminBtn" onclick="openAdminPanel()">
+                <span>⚙️</span>
+                <span>Admin</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="mainContent">
+        <h1 class="page-title" id="pageTitle">Prekės</h1>
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be loaded here -->
+        </div>
+    </main>
+
+    <!-- ADMIN PANEL -->
+    <div class="modal-overlay" id="adminModal">
+        <div class="modal" style="max-width: 1000px;">
+            <div class="modal-close" onclick="closeAdminPanel()">✕</div>
+            <div class="modal-title">
+                <span>⚙️</span>
+                <span>Admin Panelis</span>
+            </div>
+            
+            <div class="admin-dashboard">
+                <div class="admin-sidebar">
+                    <div class="admin-menu-item active" onclick="showAdminTab('products')">
+                        <span></span> Prekės
+                    </div>
+                    <div class="admin-menu-item" onclick="showAdminTab('categories')">
+                        <span>📂</span> Kategorijos
+                    </div>
+                    <div class="admin-menu-item" onclick="showAdminTab('users')">
+                        <span>👥</span> Vartotojai
+                    </div>
+                    <div class="admin-menu-item" onclick="showAdminTab('appeals')">
+                        <span></span> Skundai (<span id="appealCount">0</span>)
+                    </div>
+                </div>
+
+                <div class="admin-content" id="adminContent">
+                    <!-- Admin content will be loaded here -->
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- AUTH MODAL -->
-    <div class="auth-overlay" id="authOverlay">
-        <div class="auth-modal">
-            <div class="auth-close" onclick="closeAuth()">✕</div>
-
-            <div class="auth-brand">
-                <div class="auth-brand-icon">D</div>
-                <div class="auth-brand-name">Disney Akcijos</div>
+    <div class="modal-overlay" id="authModal">
+        <div class="modal" style="max-width: 450px;">
+            <div class="modal-close" onclick="closeAuthModal()">✕</div>
+            <div class="modal-title">
+                <span>🔑</span>
+                <span id="authModalTitle">Prisijungimas</span>
             </div>
-
-            <div id="loginForm">
-                <h2 class="auth-title" data-i18n="loginTitle">Sveiki sugrįžę</h2>
-                <p class="auth-subtitle" data-i18n="loginSubtitle">Prisijunkite, kad tęstumėte Disney Akcijose</p>
-
-                <div class="auth-error" id="loginError"></div>
-
-                <div class="auth-input-group">
-                    <input type="email" class="auth-input" id="loginEmail" placeholder="El. paštas" data-i18n-placeholder="emailPlaceholder">
+            
+            <form id="authForm" onsubmit="handleAuth(event)">
+                <div class="form-group">
+                    <label class="form-label">El. paštas</label>
+                    <input type="email" class="form-input" id="authEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Slaptažodis</label>
+                    <input type="password" class="form-input" id="authPassword" required>
                 </div>
 
-                <div class="auth-input-group">
-                    <input type="password" class="auth-input" id="loginPassword" placeholder="Slaptažodis" data-i18n-placeholder="passwordPlaceholder">
-                    <span class="auth-input-icon" onclick="togglePassword('loginPassword', this)">👁️</span>
-                </div>
-
-                <div class="auth-options">
-                    <label class="auth-checkbox">
-                        <input type="checkbox" id="rememberMe">
-                        <span data-i18n="rememberMe">Prisiminti mane</span>
-                    </label>
-                    <a class="auth-forgot" data-i18n="forgotPassword">Pamiršote slaptažodį?</a>
-                </div>
-
-                <button class="auth-submit" onclick="handleLogin()" data-i18n="signInBtn">Prisijungti</button>
-
-                <div class="auth-divider">
-                    <span data-i18n="orContinue">arba tęsti su</span>
-                </div>
-
-                <div class="auth-switch">
-                    <span data-i18n="newHere">Naujas Disney Akcijose?</span>
-                    <a onclick="switchAuth('register')" data-i18n="createAccount">Sukurti paskyrą</a>
-                </div>
-            </div>
-
-            <div id="registerForm" style="display:none;">
-                <h2 class="auth-title" data-i18n="registerTitle">Sukurti paskyrą</h2>
-                <p class="auth-subtitle" data-i18n="registerSubtitle">Prisijunkite prie Disney Akcijų šiandien</p>
-
-                <div class="auth-error" id="registerError"></div>
-                <div class="auth-success" id="registerSuccess"></div>
-
-                <div class="auth-input-group">
-                    <input type="text" class="auth-input" id="regUsername" placeholder="Vartotojo vardas" data-i18n-placeholder="usernamePlaceholder">
-                </div>
-
-                <div class="auth-input-group">
-                    <input type="email" class="auth-input" id="regEmail" placeholder="El. paštas" data-i18n-placeholder="emailPlaceholder">
-                </div>
-
-                <div class="auth-input-group">
-                    <input type="password" class="auth-input" id="regPassword" placeholder="Slaptažodis" data-i18n-placeholder="passwordPlaceholder">
-                    <span class="auth-input-icon" onclick="togglePassword('regPassword', this)">️</span>
-                </div>
-
-                <div class="auth-input-group">
-                    <input type="password" class="auth-input" id="regConfirmPassword" placeholder="Patvirtinkite slaptažodį" data-i18n-placeholder="confirmPasswordPlaceholder">
-                    <span class="auth-input-icon" onclick="togglePassword('regConfirmPassword', this)">👁️</span>
-                </div>
-
-                <button class="auth-submit" onclick="handleRegister()" data-i18n="createAccountBtn">Sukurti paskyrą</button>
-
-                <div class="auth-divider">
-                    <span data-i18n="alreadyHave">Jau turite paskyrą?</span>
-                </div>
-
-                <div class="auth-switch">
-                    <a onclick="switchAuth('login')" data-i18n="signInLink">Prisijungti</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- DASHBOARD VIEW -->
-    <div id="dashboardView">
-        <nav class="dashboard-nav">
-            <div class="dashboard-logo">
-                <div class="nav-logo-icon">D</div>
-                <span>Disney Akcijos</span>
-            </div>
-            <div class="dashboard-user">
-                <div class="dashboard-user-info">
-                    <div class="dashboard-user-name" id="dashUserName">User</div>
-                    <div class="dashboard-user-email" id="dashUserEmail">user@email.com</div>
-                </div>
-                <div class="user-avatar-small" id="dashUserAvatar">U</div>
-                <button class="logout-btn" onclick="handleLogout()" data-i18n="logoutBtn">Atsijungti</button>
-            </div>
-        </nav>
-
-        <div class="dashboard-content">
-            <div class="dashboard-welcome">
-                <h1 data-i18n="dashWelcome">Sveiki sugrįžę,</h1>
-                <p data-i18n="dashSubtitle">Štai kas vyksta su jūsų akcijomis šiandien.</p>
-            </div>
-
-            <div class="dashboard-grid">
-                <div class="dashboard-card">
-                    <div class="dashboard-card-icon"></div>
-                    <div class="stat-label" data-i18n="dashTotalStocks">Iš viso akcijų</div>
-                    <div class="stat-value">24</div>
-                    <p data-i18n="dashStocksDesc">Aktyvios akcijos</p>
-                </div>
-
-                <div class="dashboard-card">
-                    <div class="dashboard-card-icon"></div>
-                    <div class="stat-label" data-i18n="dashPortfolio">Portfelio vertė</div>
-                    <div class="stat-value">2.4M</div>
-                    <p data-i18n="dashPortfolioDesc">Serverio valiuta</p>
-                </div>
-
-                <div class="dashboard-card">
-                    <div class="dashboard-card-icon">📊</div>
-                    <div class="stat-label" data-i18n="dashProfit">Bendras pelnas</div>
-                    <div class="stat-value" style="color:#00c864;">+500K</div>
-                    <p data-i18n="dashProfitDesc">Nuo prisijungimo</p>
-                </div>
-
-                <div class="dashboard-card">
-                    <div class="dashboard-card-icon">🏆</div>
-                    <div class="stat-label" data-i18n="dashRank">Jūsų reitingas</div>
-                    <div class="stat-value">#12</div>
-                    <p data-i18n="dashRankDesc">Tarp visų prekiautojų</p>
-                </div>
-            </div>
-
-            <h2 class="dashboard-section-title" data-i18n="dashRecentActivity">Naujausia veikla</h2>
-            <div class="dashboard-activity">
-                <div class="activity-item">
-                    <div class="activity-icon">🛒</div>
-                    <div class="activity-text">
-                        <h4 data-i18n="act1Title">Nupirkote 10 Disney akcijų</h4>
-                        <p data-i18n="act1Desc">Po 100K • Iš viso: 1M</p>
+                <div id="registerFields" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Vardas</label>
+                        <input type="text" class="form-input" id="authName">
                     </div>
-                    <div class="activity-time" data-i18n="act1Time">Prieš 2 val.</div>
                 </div>
-                <div class="activity-item">
-                    <div class="activity-icon">📈</div>
-                    <div class="activity-text">
-                        <h4 data-i18n="act2Title">Akcijų vertė padidėjo</h4>
-                        <p data-i18n="act2Desc">Disney akcijos +15% šiandien</p>
-                    </div>
-                    <div class="activity-time" data-i18n="act2Time">Prieš 5 val.</div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon"></div>
-                    <div class="activity-text">
-                        <h4 data-i18n="act3Title">Pardavėte 5 akcijas</h4>
-                        <p data-i18n="act3Desc">Pelnas: 250K serverio valiutos</p>
-                    </div>
-                    <div class="activity-time" data-i18n="act3Time">Prieš 1 dieną</div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon">🎉</div>
-                    <div class="activity-text">
-                        <h4 data-i18n="act4Title">Paskyra sukurta</h4>
-                        <p data-i18n="act4Desc">Sveiki atvykę į Disney Akcijas!</p>
-                    </div>
-                    <div class="activity-time" data-i18n="act4Time">Ką tik</div>
-                </div>
-            </div>
+
+                <button type="submit" class="btn-submit" id="authSubmitBtn">Prisijungti</button>
+            </form>
+
+            <p style="text-align: center; margin-top: 20px; color: rgba(255,255,255,0.5);">
+                <span id="authToggleText">Neturite paskyros?</span>
+                <a href="#" onclick="toggleAuthMode()" style="color: #ff4444; text-decoration: none;">
+                    <span id="authToggleLink">Registruotis</span>
+                </a>
+            </p>
         </div>
     </div>
 
-    <!-- RULES MODAL (1) -->
-    <div class="modal-overlay" id="modalRules">
-        <div class="modal-content">
-            <div class="modal-close" onclick="closeModal('rules')">✕</div>
-            <div class="modal-header">
-                <div class="modal-header-icon">📋</div>
-                <div class="modal-header-text">
-                    <h2 data-i18n="rulesTitle">AKCIJŲ SISTEMOS TAISYKLĖS</h2>
-                    <p>mc.craftmc.lt</p>
-                </div>
+    <!-- APPEAL MODAL -->
+    <div class="modal-overlay" id="appealModal">
+        <div class="modal">
+            <div class="modal-close" onclick="closeAppealModal()">✕</div>
+            <div class="modal-title">
+                <span>📝</span>
+                <span>Pateikti skundą</span>
             </div>
+            
+            <form onsubmit="submitAppeal(event)">
+                <div class="form-group">
+                    <label class="form-label">Kokia buvo skirta bausmė?</label>
+                    <select class="form-select" id="appealPunishment" required>
+                        <option value="">Pasirinkite...</option>
+                        <option value="blocked">Užblokavimas</option>
+                        <option value="frozen">Užšaldymas</option>
+                    </select>
+                </div>
 
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">01</div>
-                    <div class="rule-card-title" data-i18n="r1Title">Savanoriškas įsigijimas</div>
+                <div class="form-group">
+                    <label class="form-label">Kada pastebėjote tai?</label>
+                    <input type="datetime-local" class="form-input" id="appealDate" required>
                 </div>
-                <div class="rule-card-body">
-                    <p data-i18n="r1Text">Visos akcijos turi būti įsigyjamos tik savo noru. Įsigydami akcijas patvirtinate, kad sprendimą priėmėte savarankiškai ir neturite pretenzijų dėl galimų nuostolių, nesusipratimų ar kitų su investavimu susijusių rizikų.</p>
-                </div>
-            </div>
 
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">02</div>
-                    <div class="rule-card-title" data-i18n="r2Title">Draudžiama nesąžininga veikla</div>
+                <div class="form-group">
+                    <label class="form-label">Aprašymas - kodėl norite nuimti bausmę?</label>
+                    <textarea class="form-textarea" id="appealDescription" required placeholder="Aprašykite situaciją..."></textarea>
                 </div>
-                <div class="rule-card-body">
-                    <p data-i18n="r2Text">Griežtai draudžiama vogti paskyras, bandyti neteisėtai gauti akcijas, naudotis klaidomis (bugais) ar kitais nesąžiningais būdais siekiant įgyti pranašumą. Už tokius pažeidimus paskyra gali būti laikinai užšaldyta arba visam laikui atimta.</p>
-                </div>
-            </div>
 
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">03</div>
-                    <div class="rule-card-title" data-i18n="r3Title">Paskyrų užšaldymas ir kompensacija</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="r3Text">Jeigu paskyra yra užšaldoma arba atimama dėl taisyklių pažeidimų, joje esančios investuotos akcijos gali būti grąžintos akcijų forma arba kompensuotos <strong>mc.craftmc.lt</strong> serverio valiuta administracijos nuožiūra.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">04</div>
-                    <div class="rule-card-title" data-i18n="r4Title">Draudžiama prekyba už tikrus pinigus</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="r4Text">Griežtai draudžiama pirkti, parduoti, keistis ar kitaip platinti akcijas už tikrus pinigus (EUR ar kitą realią valiutą). Tokie veiksmai laikomi nelegalia veikla šios sistemos atžvilgiu.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">05</div>
-                    <div class="rule-card-title" data-i18n="r5Title">Paskyros ištrynimas</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="r5Text">Nustačius, kad akcijos buvo parduodamos ar perkamos už tikrus pinigus, paskyra gali būti visam laikui ištrinta, o gautos lėšos ar turtas konfiskuoti. Apie tokius pažeidimus gali būti pranešta <strong>mc.craftmc.lt</strong> administracijai.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">06</div>
-                    <div class="rule-card-title" data-i18n="r6Title">Serverio banas</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="r6Text">Asmenys, užsiimantys nelegalia akcijų prekyba už realius pinigus, rizikuoja gauti ne tik akcijų sistemos paskyros blokavimą, bet ir serverio paskyros uždraudimą (ban).</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">07</div>
-                    <div class="rule-card-title" data-i18n="r7Title">Administracijos teisės</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="r7Text">Administracija pasilieka teisę tirti įtartiną veiklą, stabdyti sandorius, užšaldyti paskyras ir priimti galutinius sprendimus siekiant užtikrinti sąžiningą ir saugią akcijų sistemos veiklą.</p>
-                </div>
-            </div>
-
-            <div class="rule-agreement">
-                <p data-i18n="rulesAgreement">Naudodamiesi šia akcijų sistema, jūs automatiškai sutinkate su visomis aukščiau išvardintomis taisyklėmis.</p>
-            </div>
+                <button type="submit" class="btn-submit">Pateikti skundą</button>
+            </form>
         </div>
     </div>
 
-    <!-- BUY MODAL (2) -->
-    <div class="modal-overlay" id="modalBuy">
-        <div class="modal-content">
-            <div class="modal-close" onclick="closeModal('buy')"></div>
-            <div class="modal-header">
-                <div class="modal-header-icon"></div>
-                <div class="modal-header-text">
-                    <h2 data-i18n="buyTitle">KAIP ĮSIGYTI AKCIJAS?</h2>
-                    <p>mc.craftmc.lt</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">01</div>
-                    <div class="rule-card-title" data-i18n="b1Title">Pakankamos lėšos piniginėje</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="b1Text">Jeigu norite įsigyti akcijų, pirmiausia turite turėti pakankamai lėšų savo svetainės piniginėje.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">02</div>
-                    <div class="rule-card-title" data-i18n="b2Title">Susisiekite su savininku</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="b2Text">Norėdami papildyti svetainės piniginę ir gauti lėšų akcijų pirkimui, turite susisiekti su svetainės savininku.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">03</div>
-                    <div class="rule-card-title" data-i18n="b3Title">Nurodykite sumą</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="b3Text">Nurodykite, kiek lėšų norite papildyti, ir vykdykite savininko pateiktas instrukcijas.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">04</div>
-                    <div class="rule-card-title" data-i18n="b4Title">Lėšos papildytos</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="b4Text">Kai lėšos bus sėkmingai pridėtos į jūsų piniginę, galėsite pirkti norimą akcijų kiekį.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">05</div>
-                    <div class="rule-card-title" data-i18n="b5Title">Pasirinkite ir pirkite</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="b5Text">Pasirinkite akcijas, kurias norite įsigyti, ir patvirtinkite pirkimą.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">06</div>
-                    <div class="rule-card-title" data-i18n="b6Title">Akcijos pervestos</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="b6Text">Po sėkmingo pirkimo akcijos bus automatiškai pervestos į jūsų paskyrą.</p>
-                </div>
-            </div>
-
-            <div class="rule-highlight">
-                <p style="font-weight:700; margin-bottom:10px; color:rgba(255,255,255,0.85)!important;" data-i18n="buyImportant">Svarbu:</p>
-                <ul>
-                    <li data-i18n="buyImp1">Akcijas pirkite tik savo noru.</li>
-                    <li data-i18n="buyImp2">Prieš pirkdami susipažinkite su visomis taisyklėmis.</li>
-                    <li data-i18n="buyImp3">Akcijų negalima pardavinėti už tikrus pinigus.</li>
-                    <li data-i18n="buyImp4">Kilus klausimams ar neaiškumams, kreipkitės į svetainės savininką arba administraciją.</li>
-                </ul>
-            </div>
-
-            <div class="rule-agreement">
-                <p data-i18n="buyAgreement">Įsigydami akcijas patvirtinate, kad sutinkate su visomis akcijų sistemos taisyklėmis.</p>
-            </div>
+    <!-- BAN SCREEN -->
+    <div class="ban-screen" id="banScreen">
+        <div class="ban-icon">🚫</div>
+        <div class="ban-title" id="banTitle">Jūsų paskyra užblokuota</div>
+        <div class="ban-message" id="banMessage">
+            Jūsų paskyrą užblokavo administratorius. Susisiekite su savininku dėl papildomos informacijos.
         </div>
-    </div>
-
-    <!-- USE MODAL (3) -->
-    <div class="modal-overlay" id="modalUse">
-        <div class="modal-content">
-            <div class="modal-close" onclick="closeModal('use')">✕</div>
-            <div class="modal-header">
-                <div class="modal-header-icon">⚡</div>
-                <div class="modal-header-text">
-                    <h2 data-i18n="useTitle">KAIP NAUDOTI AKCIJAS?</h2>
-                    <p>mc.craftmc.lt</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">01</div>
-                    <div class="rule-card-title" data-i18n="u1Title">Laikykite ir stebėkite</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="u1Text">Įsigiję akcijų, jas galite laikyti savo paskyroje ir stebėti jų vertės pokyčius.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">02</div>
-                    <div class="rule-card-title" data-i18n="u2Title">Vertės pokyčiai</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="u2Text">Akcijų vertė gali kilti arba kristi priklausomai nuo rinkos situacijos ir administracijos nustatytų sąlygų.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">03</div>
-                    <div class="rule-card-title" data-i18n="u3Title">Investicijos augimas</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="u3Text">Sukaupus daugiau akcijų, jūsų investicijos vertė gali padidėti.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">04</div>
-                    <div class="rule-card-title" data-i18n="u4Title">Pardavimas sistemoje</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="u4Text">Akcijas galite parduoti sistemoje už svetainės valiutą, jeigu tokia galimybė yra suteikta.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">05</div>
-                    <div class="rule-card-title" data-i18n="u5Title">Lėšų panaudojimas</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="u5Text">Gautas lėšas iš akcijų pardavimo galite panaudoti kitų akcijų pirkimui ar kitoms sistemos funkcijoms.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">06</div>
-                    <div class="rule-card-title" data-i18n="u6Title">Viskas matoma paskyroje</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="u6Text">Visus akcijų pirkimus, pardavimus ir turimą kiekį galite matyti savo paskyroje.</p>
-                </div>
-            </div>
-
-            <div class="rule-highlight">
-                <p style="font-weight:700; margin-bottom:10px; color:rgba(255,255,255,0.85)!important;" data-i18n="useImportant">Svarbu:</p>
-                <ul>
-                    <li data-i18n="useImp1">Akcijų negalima pardavinėti ar keisti už tikrus pinigus.</li>
-                    <li data-i18n="useImp2">Draudžiama perduoti akcijas naudojantis klaidomis ar nesąžiningais būdais.</li>
-                    <li data-i18n="useImp3">Už taisyklių pažeidimus akcijos gali būti konfiskuotos, o paskyra užšaldyta arba užblokuota.</li>
-                </ul>
-            </div>
-
-            <div class="rule-agreement">
-                <p data-i18n="useAgreement">Naudodamiesi akcijomis sutinkate laikytis visų akcijų sistemos taisyklių.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- MANAGE MODAL (4) -->
-    <div class="modal-overlay" id="modalManage">
-        <div class="modal-content">
-            <div class="modal-close" onclick="closeModal('manage')"></div>
-            <div class="modal-header">
-                <div class="modal-header-icon"></div>
-                <div class="modal-header-text">
-                    <h2 data-i18n="manageTitle">KAIP NAUDOTIS AKCIJOMIS?</h2>
-                    <p>mc.craftmc.lt</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">01</div>
-                    <div class="rule-card-title" data-i18n="m1Title">Įsigijimas</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="m1Text">Įsigykite akcijų naudodami savo svetainės piniginėje esančias lėšas.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">02</div>
-                    <div class="rule-card-title" data-i18n="m2Title">Pridėjimas prie paskyros</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="m2Text">Po pirkimo akcijos bus pridėtos prie jūsų paskyros.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">03</div>
-                    <div class="rule-card-title" data-i18n="m3Title">Vertės stebėjimas</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="m3Text">Stebėkite akcijų vertę ir jų pokyčius savo paskyroje.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">04</div>
-                    <div class="rule-card-title" data-i18n="m4Title">Pardavimas pelnui</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="m4Text">Jei akcijų vertė pakyla, galite jas parduoti ir gauti pelno svetainės valiuta.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">05</div>
-                    <div class="rule-card-title" data-i18n="m5Title">Lėšų valdymas</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="m5Text">Gautas lėšas galite panaudoti naujų akcijų pirkimui arba laikyti savo piniginėje.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">06</div>
-                    <div class="rule-card-title" data-i18n="m6Title">Didesnė investicija</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="m6Text">Kuo daugiau akcijų turite, tuo didesnė gali būti jūsų investicijos vertė.</p>
-                </div>
-            </div>
-
-            <div class="rule-card">
-                <div class="rule-card-header">
-                    <div class="rule-number">07</div>
-                    <div class="rule-card-title" data-i18n="m7Title">Rizikos įvertinimas</div>
-                </div>
-                <div class="rule-card-body">
-                    <p data-i18n="m7Text">Prieš pirkdami ar parduodami akcijas visada įvertinkite galimą riziką.</p>
-                </div>
-            </div>
-
-            <div class="example-box">
-                <p style="font-weight:700; color:rgba(255,255,255,0.85)!important; margin-bottom:12px;" data-i18n="exampleTitle">📊 Pavyzdys:</p>
-                <p data-i18n="ex1">• Nusiperkate 10 akcijų po <strong>100K</strong>.</p>
-                <p data-i18n="ex2">• Bendra investicija: <strong>1M</strong>.</p>
-                <p data-i18n="ex3">• Jei akcijos vertė pakyla iki <strong>150K</strong>, jūsų 10 akcijų vertė tampa <strong>1.5M</strong>.</p>
-                <p data-i18n="ex4">• Pardavę akcijas gautumėte <strong>500K</strong> pelno.</p>
-            </div>
-
-            <div class="rule-highlight">
-                <p style="font-weight:700; margin-bottom:10px; color:rgba(255,255,255,0.85)!important;" data-i18n="manageImportant">Svarbu:</p>
-                <ul>
-                    <li data-i18n="manageImp1">Akcijų vertė gali tiek kilti, tiek kristi.</li>
-                    <li data-i18n="manageImp2">Akcijų negalima pardavinėti už tikrus pinigus.</li>
-                    <li data-i18n="manageImp3">Visi sandoriai turi būti atliekami pagal sistemos taisykles.</li>
-                    <li data-i18n="manageImp4">Už taisyklių pažeidimus paskyra gali būti užšaldyta arba užblokuota.</li>
-                </ul>
-            </div>
-
-            <div class="rule-agreement">
-                <p data-i18n="manageAgreement">Naudodamiesi akcijų sistema patvirtinate, kad sutinkate su visomis taisyklėmis.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ABOUT MODAL -->
-    <div class="about-overlay" id="aboutOverlay">
-        <div class="about-modal">
-            <div class="about-close" onclick="closeAbout()">✕</div>
-
-            <div class="about-header">
-                <div class="about-header-icon">D</div>
-                <div class="about-header-text">
-                    <h2 data-i18n="aboutTitle">Apie Disney Akcijas</h2>
-                    <p data-i18n="aboutSubtitle">mc.craftmc.lt oficiali akcijų platforma</p>
-                </div>
-            </div>
-
-            <div class="about-divider"></div>
-
-            <div class="about-section">
-                <h3><span class="emoji">👋</span> <span data-i18n="aboutWelcome">Sveiki atvykę!</span></h3>
-                <p data-i18n="aboutWelcomeText">Sveiki! Ši svetainė skirta įsigyti <strong>mc.craftmc.lt</strong> Disney akcijas, kurias galima pirkti tik už žaidime esančią valiutą. Tai unikali galimybė investuoti į virtualų turtą Minecraft serveryje ir stebėti, kaip jūsų investicijos auga.</p>
-            </div>
-
-            <div class="about-section">
-                <h3><span class="emoji">📈</span> <span data-i18n="aboutHowItWorks">Kaip tai veikia?</span></h3>
-                <p data-i18n="aboutHowItWorksText">Akcijų kainos kyla arba krenta priklausomai nuo clan stabilumo. Kiekvieną dieną kainos keičiasi – tai dinamiška rinka, kurioje galite uždirbti arba prarasti.</p>
-                <div class="about-highlight">
-                    <p data-i18n="aboutHighlight">⚡ Akcijų kainos kyla ir krenta kasdien – tai suteikia galimybę įsigyti jas už gerą kainą ir parduoti brangiau, kai rinka pakyla!</p>
-                </div>
-            </div>
-
-            <div class="about-section">
-                <h3><span class="emoji">💎</span> <span data-i18n="aboutWhy">Kodėl verta?</span></h3>
-                <ul>
-                    <li data-i18n="aboutWhy1">Pirkimas tik už žaidimo valiutą – jokių realių pinigų</li>
-                    <li data-i18n="aboutWhy2">Dienos kainų svyravimai suteikia investavimo galimybes</li>
-                    <li data-i18n="aboutWhy3">Clan stabilumas tiesiogiai įtakoja akcijų vertę</li>
-                    <li data-i18n="aboutWhy4">Galimybė stebėti rinką ir priimti strateginius sprendimus</li>
-                </ul>
-            </div>
-
-            <div class="about-section">
-                <h3><span class="emoji">🎮</span> <span data-i18n="aboutServer">Apie serverį</span></h3>
-                <p data-i18n="aboutServerText">mc.craftmc.lt – tai aktyvus Minecraft serveris su unikalia ekonomikos sistema. Disney akcijos yra viena iš pagrindinių investavimo priemonių serveryje, leidžianti žaidėjams dalyvauti virtualioje rinkoje.</p>
-            </div>
-
-            <div class="about-divider"></div>
-
-            <div class="about-footer-note">
-                <p data-i18n="aboutFooterNote">Turite klausimų? Susisiekite su mumis: <a href="tel:+37061691510">+370 616 91510</a> arba <a href="mailto:andriusdruskys@gmail.com">andriusdruskys@gmail.com</a></p>
-            </div>
-        </div>
+        <button class="appeal-btn" onclick="openAppealModal()">Pateikti skundą</button>
     </div>
 
     <script>
-        // ===== TRANSLATIONS =====
-        const T = {
-            lt: {
-                navHome:"Pradžia", navAbout:"Apie mus", navContact:"Kontaktai",
-                heroTitle:"Disney Akcijos",
-                heroDesc:"Geriausi Disney pasiūlymai, nuolaidos ir specialios akcijos vienoje vietoje. Atraskite magiją ir sutaupykite.",
-                btnStart:"Sužinoti daugiau →", btnMore:"Susisiekti",
-                timeLabel:"Lietuvos laikas",
-                footerDesc:"Greita, saugi ir patikima skaitmeninių produktų platforma. Tūkstančiai patenkintų klientų nuo 2026 metų.",
-                footerRules:"Taisyklės",
-                rule1:"Taisyklės", rule2:"Kaip įsigyti akcijas", rule3:"Kaip jas naudoti", rule4:"Kaip jomis naudotis",
-                footerContacts:"Kontaktai",
-                footerOnline:"Visada aktyvūs", footerRights:"Visos teisės saugomos.",
-                authBtn:"Prisijungti",
-                loginTitle:"Sveiki sugrįžę", loginSubtitle:"Prisijunkite, kad tęstumėte Disney Akcijose",
-                emailPlaceholder:"El. paštas", passwordPlaceholder:"Slaptažodis",
-                usernamePlaceholder:"Vartotojo vardas", confirmPasswordPlaceholder:"Patvirtinkite slaptažodį",
-                rememberMe:"Prisiminti mane", forgotPassword:"Pamiršote slaptažodį?",
-                signInBtn:"Prisijungti", orContinue:"arba tęsti su",
-                newHere:"Naujas Disney Akcijose?", createAccount:"Sukurti paskyrą",
-                registerTitle:"Sukurti paskyrą", registerSubtitle:"Prisijunkite prie Disney Akcijų šiandien",
-                createAccountBtn:"Sukurti paskyrą", alreadyHave:"Jau turite paskyrą?", signInLink:"Prisijungti",
-                logoutBtn:"Atsijungti",
-                dashWelcome:"Sveiki sugrįžę,", dashSubtitle:"Štai kas vyksta su jūsų akcijomis šiandien.",
-                dashTotalStocks:"Iš viso akcijų", dashStocksDesc:"Aktyvios akcijos",
-                dashPortfolio:"Portfelio vertė", dashPortfolioDesc:"Serverio valiuta",
-                dashProfit:"Bendras pelnas", dashProfitDesc:"Nuo prisijungimo",
-                dashRank:"Jūsų reitingas", dashRankDesc:"Tarp visų prekiautojų",
-                dashRecentActivity:"Naujausia veikla",
-                act1Title:"Nupirkote 10 Disney akcijų", act1Desc:"Po 100K • Iš viso: 1M", act1Time:"Prieš 2 val.",
-                act2Title:"Akcijų vertė padidėjo", act2Desc:"Disney akcijos +15% šiandien", act2Time:"Prieš 5 val.",
-                act3Title:"Pardavėte 5 akcijas", act3Desc:"Pelnas: 250K serverio valiutos", act3Time:"Prieš 1 dieną",
-                act4Title:"Paskyra sukurta", act4Desc:"Sveiki atvykę į Disney Akcijas!", act4Time:"Ką tik",
-                aboutTitle:"Apie Disney Akcijas", aboutSubtitle:"mc.craftmc.lt oficiali akcijų platforma",
-                aboutWelcome:"Sveiki atvykę!",
-                aboutWelcomeText:'Sveiki! Ši svetainė skirta įsigyti mc.craftmc.lt Disney akcijas, kurias galima pirkti tik už žaidime esančią valiutą.',
-                aboutHowItWorks:"Kaip tai veikia?",
-                aboutHowItWorksText:"Akcijų kainos kyla arba krenta priklausomai nuo clan stabilumo. Kiekvieną dieną kainos keičiasi.",
-                aboutHighlight:" Akcijų kainos kyla ir krenta kasdien!",
-                aboutWhy:"Kodėl verta?",
-                aboutWhy1:"Pirkimas tik už žaidimo valiutą", aboutWhy2:"Dienos kainų svyravimai",
-                aboutWhy3:"Clan stabilumas įtakoja vertę", aboutWhy4:"Strateginiai sprendimai",
-                aboutServer:"Apie serverį",
-                aboutServerText:"mc.craftmc.lt – aktyvus Minecraft serveris su unikalia ekonomikos sistema.",
-                aboutFooterNote:'Klausimų? +370 616 91510 arba andriusdruskys@gmail.com',
-                rulesTitle:"AKCIJŲ SISTEMOS TAISYKLĖS",
-                r1Title:"Savanoriškas įsigijimas", r1Text:"Visos akcijos turi būti įsigyjamos tik savo noru. Įsigydami akcijas patvirtinate, kad sprendimą priėmėte savarankiškai ir neturite pretenzijų dėl galimų nuostolių.",
-                r2Title:"Draudžiama nesąžininga veikla", r2Text:"Griežtai draudžiama vogti paskyras, bandyti neteisėtai gauti akcijas, naudotis klaidomis (bugais). Už pažeidimus paskyra gali būti užšaldyta arba atimta.",
-                r3Title:"Paskyrų užšaldymas ir kompensacija", r3Text:"Jeigu paskyra užšaldoma dėl pažeidimų, akcijos gali būti grąžintos arba kompensuotos mc.craftmc.lt valiuta.",
-                r4Title:"Draudžiama prekyba už tikrus pinigus", r4Text:"Griežtai draudžiama pirkti, parduoti ar keisti akcijas už realius pinigus. Tai nelegalu.",
-                r5Title:"Paskyros ištrynimas", r5Text:"Nustačius prekybą už realius pinigus, paskyra ištrinama, turtas konfiskuojamas.",
-                r6Title:"Serverio banas", r6Text:"Nelegalūs prekiautojai gauna ne tik sistemos blokavimą, bet ir serverio baną.",
-                r7Title:"Administracijos teisės", r7Text:"Administracija tiria įtartiną veiklą, stabdo sandorius ir priima galutinius sprendimus.",
-                rulesAgreement:"Naudodamiesi sistema automatiškai sutinkate su visomis taisyklėmis.",
-                buyTitle:"KAIP ĮSIGYTI AKCIJAS?",
-                b1Title:"Pakankamos lėšos piniginėje", b1Text:"Turėkite pakankamai lėšų savo svetainės piniginėje.",
-                b2Title:"Susisiekite su savininku", b2Text:"Norėdami papildyti piniginę, susisiekite su svetainės savininku.",
-                b3Title:"Nurodykite sumą", b3Text:"Nurodykite kiek norite papildyti ir vykdykite instrukcijas.",
-                b4Title:"Lėšos papildytos", b4Text:"Kai lėšos pridėtos, galėsite pirkti akcijas.",
-                b5Title:"Pasirinkite ir pirkite", b5Text:"Pasirinkite norimas akcijas ir patvirtinkite pirkimą.",
-                b6Title:"Akcijos pervestos", b6Text:"Po pirkimo akcijos automatiškai pervestos į jūsų paskyrą.",
-                buyImportant:"Svarbu:",
-                buyImp1:"Akcijas pirkite tik savo noru.", buyImp2:"Susipažinkite su visomis taisyklėmis.",
-                buyImp3:"Negalima pardavinėti už realius pinigus.", buyImp4:"Kilus klausimams kreipkitės į savininką.",
-                buyAgreement:"Įsigydami akcijas sutinkate su visomis taisyklėmis.",
-                useTitle:"KAIP NAUDOTI AKCIJAS?",
-                u1Title:"Laikykite ir stebėkite", u1Text:"Laikykite akcijas paskyroje ir stebėkite vertės pokyčius.",
-                u2Title:"Vertės pokyčiai", u2Text:"Vertė gali kilti arba kristi priklausomai nuo rinkos.",
-                u3Title:"Investicijos augimas", u3Text:"Daugiau akcijų = didesnė investicijos vertė.",
-                u4Title:"Pardavimas sistemoje", u4Text:"Parduokite akcijas už serverio valiutą.",
-                u5Title:"Lėšų panaudojimas", u5Text:"Naudokite lėšas naujiems pirkimams ar kitoms funkcijoms.",
-                u6Title:"Viskas matoma paskyroje", u6Text:"Visus pirkimus, pardavimus ir kiekį matote paskyroje.",
-                useImportant:"Svarbu:",
-                useImp1:"Negalima keisti už realius pinigus.", useImp2:"Draudžiama nesąžininga veikla.",
-                useImp3:"Už pažeidimus akcijos konfiskuojamos, paskyra blokuojama.",
-                useAgreement:"Naudodamiesi akcijomis sutinkate su taisyklėmis.",
-                manageTitle:"KAIP NAUDOTIS AKCIJOMIS?",
-                m1Title:"Įsigijimas", m1Text:"Pirkite akcijas su savo piniginės lėšomis.",
-                m2Title:"Pridėjimas prie paskyros", m2Text:"Po pirkimo akcijos pridedamos prie paskyros.",
-                m3Title:"Vertės stebėjimas", m3Text:"Stebėkite akcijų vertę ir pokyčius.",
-                m4Title:"Pardavimas pelnui", m4Text:"Jei vertė pakyla, parduokite ir gaukite pelno.",
-                m5Title:"Lėšų valdymas", m5Text:"Naudokite lėšas naujiems pirkimams arba laikykite piniginėje.",
-                m6Title:"Didesnė investicija", m6Text:"Kuo daugiau akcijų, tuo didesnė vertė.",
-                m7Title:"Rizikos įvertinimas", m7Text:"Visada įvertinkite riziką prieš pirkdami ar parduodami.",
-                exampleTitle:" Pavyzdys:",
-                ex1:"• Nusiperkate 10 akcijų po 100K.", ex2:"• Bendra investicija: 1M.",
-                ex3:"• Jei vertė pakyla iki 150K = 1.5M.", ex4:"• Pelnas: 500K.",
-                manageImportant:"Svarbu:",
-                manageImp1:"Vertė gali kilti ir kristi.", manageImp2:"Negalima pardavinėti už pinigus.",
-                manageImp3:"Sandoriai pagal taisykles.", manageImp4:"Už pažeidimus blokuojama.",
-                manageAgreement:"Naudodamiesi sistema sutinkate su taisyklėmis.",
-                loadingSub:"RUOŠIAME TAVO PARDUOTUVĘ"
-            },
-            de: {
-                navHome:"Start", navAbout:"Über uns", navContact:"Kontakt",
-                heroTitle:"Disney Angebote", heroDesc:"Die besten Disney-Angebote an einem Ort.",
-                btnStart:"Mehr erfahren →", btnMore:"Kontakt",
-                timeLabel:"Litauische Zeit", footerDesc:"Schnelle Plattform seit 2026.",
-                footerRules:"Regeln", rule1:"Regeln", rule2:"Wie kaufen", rule3:"Wie nutzen", rule4:"Wie verwalten",
-                footerContacts:"Kontakt", footerOnline:"Immer aktiv", footerRights:"Alle Rechte vorbehalten.",
-                authBtn:"Anmelden",
-                loginTitle:"Willkommen zurück", loginSubtitle:"Melden Sie sich an",
-                emailPlaceholder:"E-Mail", passwordPlaceholder:"Passwort",
-                usernamePlaceholder:"Benutzername", confirmPasswordPlaceholder:"Passwort bestätigen",
-                rememberMe:"Angemeldet bleiben", forgotPassword:"Passwort vergessen?",
-                signInBtn:"Anmelden", orContinue:"oder fortfahren",
-                newHere:"Neu bei Disney?", createAccount:"Konto erstellen",
-                registerTitle:"Konto erstellen", registerSubtitle:"Treten Sie Disney bei",
-                createAccountBtn:"Konto erstellen", alreadyHave:"Bereits ein Konto?", signInLink:"Anmelden",
-                logoutBtn:"Abmelden",
-                dashWelcome:"Willkommen zurück,", dashSubtitle:"Hier ist, was mit Ihren Aktien passiert.",
-                dashTotalStocks:"Aktien gesamt", dashStocksDesc:"Aktive Bestände",
-                dashPortfolio:"Portfoliowert", dashPortfolioDesc:"In Serverwährung",
-                dashProfit:"Gesamtgewinn", dashProfitDesc:"Seit Beitritt",
-                dashRank:"Ihr Rang", dashRankDesc:"Unter allen Händlern",
-                dashRecentActivity:"Letzte Aktivität",
-                act1Title:"10 Disney-Aktien gekauft", act1Desc:"Je 100K • Gesamt: 1M", act1Time:"Vor 2 Std.",
-                act2Title:"Aktienwert gestiegen", act2Desc:"Disney +15% heute", act2Time:"Vor 5 Std.",
-                act3Title:"5 Aktien verkauft", act3Desc:"Gewinn: 250K", act3Time:"Vor 1 Tag",
-                act4Title:"Konto erstellt", act4Desc:"Willkommen!", act4Time:"Gerade eben",
-                aboutTitle:"Über Disney", aboutSubtitle:"Offizielle mc.craftmc.lt Plattform",
-                aboutWelcome:"Willkommen!", aboutWelcomeText:"Hallo! Diese Website dient dem Kauf von Disney-Aktien.",
-                aboutHowItWorks:"Wie funktioniert es?", aboutHowItWorksText:"Die Kurse ändern sich täglich.",
-                aboutHighlight:" Kurse ändern sich täglich!", aboutWhy:"Warum?",
-                aboutWhy1:"Nur Spielwährung", aboutWhy2:"Tägliche Schwankungen",
-                aboutWhy3:"Clan-Stabilität beeinflusst Wert", aboutWhy4:"Strategische Entscheidungen",
-                aboutServer:"Über den Server", aboutServerText:"mc.craftmc.lt ist ein aktiver Minecraft-Server.",
-                aboutFooterNote:"Fragen? +370 616 91510",
-                rulesTitle:"AKTIENSYSTEM REGELN",
-                r1Title:"Freiwilliger Kauf", r1Text:"Alle Aktien müssen freiwillig gekauft werden.",
-                r2Title:"Unfaire Aktivitäten verboten", r2Text:"Account-Diebstahl und Bug-Nutzung verboten.",
-                r3Title:"Account-Sperrung", r3Text:"Bei Verstößen können Aktien kompensiert werden.",
-                r4Title:"Realgeld-Handel verboten", r4Text:"Aktien dürfen nicht für echtes Geld gehandelt werden.",
-                r5Title:"Account-Löschung", r5Text:"Bei Realgeld-Handel wird der Account gelöscht.",
-                r6Title:"Server-Bann", r6Text:"Illegale Händler riskieren einen Bann.",
-                r7Title:"Administrationsrechte", r7Text:"Administration untersucht verdächtige Aktivitäten.",
-                rulesAgreement:"Mit der Nutzung stimmen Sie allen Regeln zu.",
-                buyTitle:"WIE AKTIEN KAUFEN?",
-                b1Title:"Ausreichende Mittel", b1Text:"Sie müssen genügend Guthaben haben.",
-                b2Title:"Kontaktieren Sie den Eigentümer", b2Text:"Kontaktieren Sie den Website-Eigentümer.",
-                b3Title:"Betrag angeben", b3Text:"Geben Sie den gewünschten Betrag an.",
-                b4Title:"Guthaben aufgeladen", b4Text:"Nach Aufladung können Sie kaufen.",
-                b5Title:"Auswählen und kaufen", b5Text:"Wählen Sie Aktien und bestätigen Sie.",
-                b6Title:"Aktien übertragen", b6Text:"Aktien werden automatisch gutgeschrieben.",
-                buyImportant:"Wichtig:", buyImp1:"Nur freiwillig kaufen.", buyImp2:"Lesen Sie alle Regeln.",
-                buyImp3:"Kein Realgeld-Verkauf.", buyImp4:"Bei Fragen kontaktieren Sie uns.",
-                buyAgreement:"Mit dem Kauf stimmen Sie allen Regeln zu.",
-                useTitle:"WIE AKTIEN NUTZEN?",
-                u1Title:"Behalten und beobachten", u1Text:"Behalten Sie Aktien und beobachten Sie.",
-                u2Title:"Wertänderungen", u2Text:"Der Wert kann steigen oder fallen.",
-                u3Title:"Investitionswachstum", u3Text:"Mehr Aktien = höherer Wert.",
-                u4Title:"System-Verkauf", u4Text:"Verkaufen Sie im System.",
-                u5Title:"Geldnutzung", u5Text:"Nutzen Sie Erlöse für neue Käufe.",
-                u6Title:"Alles sichtbar", u6Text:"Alle Transaktionen sichtbar.",
-                useImportant:"Wichtig:", useImp1:"Kein Realgeld-Verkauf.", useImp2:"Keine unfairen Methoden.",
-                useImp3:"Bei Verstößen werden Aktien konfisziert.",
-                useAgreement:"Mit der Nutzung stimmen Sie allen Regeln zu.",
-                manageTitle:"WIE MIT AKTIEN ARBEITEN?",
-                m1Title:"Kauf", m1Text:"Kaufen Sie mit Ihrem Guthaben.",
-                m2Title:"Konto-Gutschrift", m2Text:"Aktien werden gutgeschrieben.",
-                m3Title:"Wert beobachten", m3Text:"Beobachten Sie Wertänderungen.",
-                m4Title:"Gewinn-Verkauf", m4Text:"Verkaufen Sie bei Wertsteigerung.",
-                m5Title:"Geldverwaltung", m5Text:"Nutzen Sie Erlöse für neue Käufe.",
-                m6Title:"Größere Investition", m6Text:"Mehr Aktien = höherer Wert.",
-                m7Title:"Risiko bewerten", m7Text:"Bewerten Sie immer das Risiko.",
-                exampleTitle:" Beispiel:", ex1:"• 10 Aktien zu 100K.", ex2:"• Gesamt: 1M.",
-                ex3:"• Bei 150K = 1.5M.", ex4:"• Gewinn: 500K.",
-                manageImportant:"Wichtig:", manageImp1:"Wert kann steigen oder fallen.",
-                manageImp2:"Kein Realgeld-Verkauf.", manageImp3:"Alle Transaktionen nach Regeln.",
-                manageImp4:"Bei Verstößen Account-Sperre.",
-                manageAgreement:"Mit der Nutzung stimmen Sie allen Regeln zu.",
-                loadingSub:"WIR BEREITEN IHREN SHOP VOR"
-            },
-            en: {
-                navHome:"Home", navAbout:"About", navContact:"Contact",
-                heroTitle:"Disney Deals", heroDesc:"The best Disney offers in one place.",
-                btnStart:"Learn More →", btnMore:"Contact Us",
-                timeLabel:"Lithuanian Time", footerDesc:"Fast platform since 2026.",
-                footerRules:"Rules", rule1:"Rules", rule2:"How to buy", rule3:"How to use", rule4:"How to manage",
-                footerContacts:"Contacts", footerOnline:"Always Active", footerRights:"All rights reserved.",
-                authBtn:"Sign In",
-                loginTitle:"Welcome back", loginSubtitle:"Sign in to continue to Disney Deals",
-                emailPlaceholder:"Email", passwordPlaceholder:"Password",
-                usernamePlaceholder:"Username", confirmPasswordPlaceholder:"Confirm Password",
-                rememberMe:"Remember me", forgotPassword:"Forgot password?",
-                signInBtn:"Sign In", orContinue:"or continue",
-                newHere:"New to Disney Deals?", createAccount:"Create account",
-                registerTitle:"Create account", registerSubtitle:"Join Disney Deals today",
-                createAccountBtn:"Create Account", alreadyHave:"Already have an account?", signInLink:"Sign In",
-                logoutBtn:"Logout",
-                dashWelcome:"Welcome back,", dashSubtitle:"Here's what's happening with your stocks.",
-                dashTotalStocks:"Total Stocks", dashStocksDesc:"Active holdings",
-                dashPortfolio:"Portfolio Value", dashPortfolioDesc:"In server currency",
-                dashProfit:"Total Profit", dashProfitDesc:"Since joining",
-                dashRank:"Your Rank", dashRankDesc:"Among all traders",
-                dashRecentActivity:"Recent Activity",
-                act1Title:"Purchased 10 Disney stocks", act1Desc:"At 100K each • Total: 1M", act1Time:"2 hours ago",
-                act2Title:"Stock value increased", act2Desc:"Disney +15% today", act2Time:"5 hours ago",
-                act3Title:"Sold 5 stocks", act3Desc:"Profit: 250K", act3Time:"1 day ago",
-                act4Title:"Account created", act4Desc:"Welcome!", act4Time:"Just now",
-                aboutTitle:"About Disney Deals", aboutSubtitle:"Official mc.craftmc.lt platform",
-                aboutWelcome:"Welcome!", aboutWelcomeText:"Hello! This website is for purchasing Disney stocks.",
-                aboutHowItWorks:"How does it work?", aboutHowItWorksText:"Prices change daily.",
-                aboutHighlight:"⚡ Prices change daily!", aboutWhy:"Why?",
-                aboutWhy1:"In-game currency only", aboutWhy2:"Daily fluctuations",
-                aboutWhy3:"Clan stability affects value", aboutWhy4:"Strategic decisions",
-                aboutServer:"About the server", aboutServerText:"mc.craftmc.lt is an active Minecraft server.",
-                aboutFooterNote:"Questions? +370 616 91510",
-                rulesTitle:"STOCK SYSTEM RULES",
-                r1Title:"Voluntary purchase", r1Text:"All stocks must be purchased voluntarily.",
-                r2Title:"Unfair activity prohibited", r2Text:"Account theft and bug exploitation are forbidden.",
-                r3Title:"Account freezing", r3Text:"Stocks may be compensated upon violations.",
-                r4Title:"Real money trading banned", r4Text:"Stocks cannot be traded for real money.",
-                r5Title:"Account deletion", r5Text:"Real money trading leads to deletion.",
-                r6Title:"Server ban", r6Text:"Illegal traders risk a ban.",
-                r7Title:"Administration rights", r7Text:"Administration investigates suspicious activity.",
-                rulesAgreement:"By using this system you agree to all rules.",
-                buyTitle:"HOW TO BUY STOCKS?",
-                b1Title:"Sufficient funds", b1Text:"You must have enough balance.",
-                b2Title:"Contact owner", b2Text:"Contact the website owner.",
-                b3Title:"Specify amount", b3Text:"Specify how much to add.",
-                b4Title:"Funds added", b4Text:"After top-up you can buy.",
-                b5Title:"Select and buy", b5Text:"Choose stocks and confirm.",
-                b6Title:"Stocks transferred", b6Text:"Stocks are automatically added.",
-                buyImportant:"Important:", buyImp1:"Buy only voluntarily.", buyImp2:"Read all rules.",
-                buyImp3:"No real money sales.", buyImp4:"Contact us with questions.",
-                buyAgreement:"By buying you agree to all rules.",
-                useTitle:"HOW TO USE STOCKS?",
-                u1Title:"Hold and watch", u1Text:"Hold stocks and watch value.",
-                u2Title:"Value changes", u2Text:"Value can rise or fall.",
-                u3Title:"Investment growth", u3Text:"More stocks = higher value.",
-                u4Title:"System sale", u4Text:"Sell in the system.",
-                u5Title:"Use funds", u5Text:"Use proceeds for new purchases.",
-                u6Title:"Everything visible", u6Text:"All transactions visible.",
-                useImportant:"Important:", useImp1:"No real money sales.", useImp2:"No unfair methods.",
-                useImp3:"Violations lead to confiscation.",
-                useAgreement:"By using stocks you agree to all rules.",
-                manageTitle:"HOW TO MANAGE STOCKS?",
-                m1Title:"Purchase", m1Text:"Buy stocks with your balance.",
-                m2Title:"Account credit", m2Text:"Stocks are added to account.",
-                m3Title:"Watch value", m3Text:"Monitor value changes.",
-                m4Title:"Profit sale", m4Text:"Sell when value rises.",
-                m5Title:"Fund management", m5Text:"Use proceeds for new purchases.",
-                m6Title:"Bigger investment", m6Text:"More stocks = higher value.",
-                m7Title:"Assess risk", m7Text:"Always assess risk.",
-                exampleTitle:"📊 Example:", ex1:"• Buy 10 stocks at 100K.", ex2:"• Total: 1M.",
-                ex3:"• At 150K = 1.5M.", ex4:"• Profit: 500K.",
-                manageImportant:"Important:", manageImp1:"Value can rise or fall.",
-                manageImp2:"No real money sales.", manageImp3:"All trades per rules.",
-                manageImp4:"Violations lead to freeze.",
-                manageAgreement:"By using the system you agree to all rules.",
-                loadingSub:"PREPARING YOUR STORE"
-            },
-            it: { navHome:"Home", navAbout:"Chi siamo", navContact:"Contatti", heroTitle:"Offerte Disney", heroDesc:"Le migliori offerte.", btnStart:"Scopri →", btnMore:"Contatti", timeLabel:"Ora Lituana", footerDesc:"Piattaforma dal 2026.", footerRules:"Regole", rule1:"Regole", rule2:"Come comprare", rule3:"Come usare", rule4:"Come gestire", footerContacts:"Contatti", footerOnline:"Sempre attivo", footerRights:"Tutti i diritti riservati.", authBtn:"Accedi", loginTitle:"Bentornato", loginSubtitle:"Accedi per continuare", emailPlaceholder:"Email", passwordPlaceholder:"Password", usernamePlaceholder:"Nome utente", confirmPasswordPlaceholder:"Conferma password", rememberMe:"Ricordami", forgotPassword:"Password dimenticata?", signInBtn:"Accedi", orContinue:"o continua", newHere:"Nuovo?", createAccount:"Crea account", registerTitle:"Crea account", registerSubtitle:"Unisciti oggi", createAccountBtn:"Crea Account", alreadyHave:"Hai già un account?", signInLink:"Accedi", logoutBtn:"Esci", loadingSub:"PREPARANDO IL NEGOZIO" },
-            ru: { navHome:"Главная", navAbout:"О нас", navContact:"Контакты", heroTitle:"Акции Disney", heroDesc:"Лучшие предложения.", btnStart:"Подробнее →", btnMore:"Связаться", timeLabel:"Литовское время", footerDesc:"Платформа с 2026.", footerRules:"Правила", rule1:"Правила", rule2:"Как купить", rule3:"Как использовать", rule4:"Как управлять", footerContacts:"Контакты", footerOnline:"Всегда активны", footerRights:"Все права защищены.", authBtn:"Войти", loginTitle:"Добро пожаловать", loginSubtitle:"Войдите чтобы продолжить", emailPlaceholder:"Email", passwordPlaceholder:"Пароль", usernamePlaceholder:"Имя пользователя", confirmPasswordPlaceholder:"Подтвердите пароль", rememberMe:"Запомнить", forgotPassword:"Забыли пароль?", signInBtn:"Войти", orContinue:"или продолжить", newHere:"Новичок?", createAccount:"Создать аккаунт", registerTitle:"Создать аккаунт", registerSubtitle:"Присоединяйтесь", createAccountBtn:"Создать аккаунт", alreadyHave:"Уже есть аккаунт?", signInLink:"Войти", logoutBtn:"Выйти", loadingSub:"ПОДГОТАВЛИВАЕМ МАГАЗИН" },
-            fr: { navHome:"Accueil", navAbout:"À propos", navContact:"Contact", heroTitle:"Offres Disney", heroDesc:"Les meilleures offres.", btnStart:"En savoir →", btnMore:"Contact", timeLabel:"Heure Lituanienne", footerDesc:"Plateforme depuis 2026.", footerRules:"Règles", rule1:"Règles", rule2:"Comment acheter", rule3:"Comment utiliser", rule4:"Comment gérer", footerContacts:"Contacts", footerOnline:"Toujours actif", footerRights:"Tous droits réservés.", authBtn:"Connexion", loginTitle:"Bon retour", loginSubtitle:"Connectez-vous", emailPlaceholder:"Email", passwordPlaceholder:"Mot de passe", usernamePlaceholder:"Nom d'utilisateur", confirmPasswordPlaceholder:"Confirmer mot de passe", rememberMe:"Se souvenir", forgotPassword:"Mot de passe oublié?", signInBtn:"Se connecter", orContinue:"ou continuer", newHere:"Nouveau?", createAccount:"Créer un compte", registerTitle:"Créer un compte", registerSubtitle:"Rejoignez-nous", createAccountBtn:"Créer un compte", alreadyHave:"Déjà un compte?", signInLink:"Se connecter", logoutBtn:"Déconnexion", loadingSub:"PRÉPARATION BOUTIQUE" },
-            lv: { navHome:"Sākums", navAbout:"Par mums", navContact:"Kontakti", heroTitle:"Disney Akcijas", heroDesc:"Labākie piedāvājumi.", btnStart:"Uzzināt →", btnMore:"Kontakti", timeLabel:"Lietuvas laiks", footerDesc:"Platforma kopš 2026.", footerRules:"Noteikumi", rule1:"Noteikumi", rule2:"Kā iegādāties", rule3:"Kā izmantot", rule4:"Kā pārvaldīt", footerContacts:"Kontakti", footerOnline:"Vienmēr aktīvs", footerRights:"Visas tiesības aizsargātas.", authBtn:"Pieslēgties", loginTitle:"Laipni atgriezies", loginSubtitle:"Pieslēdzieties", emailPlaceholder:"E-pasts", passwordPlaceholder:"Parole", usernamePlaceholder:"Lietotājvārds", confirmPasswordPlaceholder:"Apstipriniet paroli", rememberMe:"Atcerēties", forgotPassword:"Aizmirsāt paroli?", signInBtn:"Pieslēgties", orContinue:"vai turpināt", newHere:"Jauns?", createAccount:"Izveidot kontu", registerTitle:"Izveidot kontu", registerSubtitle:"Pievienojieties", createAccountBtn:"Izveidot kontu", alreadyHave:"Jau ir konts?", signInLink:"Pieslēgties", logoutBtn:"Atslēgties", loadingSub:"GATAVOJAM VEIKALU" },
-            et: { navHome:"Avaleht", navAbout:"Meist", navContact:"Kontakt", heroTitle:"Disney Pakkumised", heroDesc:"Parimad pakkumised.", btnStart:"Loe →", btnMore:"Kontakt", timeLabel:"Leedu aeg", footerDesc:"Platvorm alates 2026.", footerRules:"Reeglid", rule1:"Reeglid", rule2:"Kuidas osta", rule3:"Kuidas kasutada", rule4:"Kuidas hallata", footerContacts:"Kontaktid", footerOnline:"Alati aktiivne", footerRights:"Kõik õigused kaitstud.", authBtn:"Logi sisse", loginTitle:"Tere tulemast", loginSubtitle:"Logige sisse", emailPlaceholder:"E-post", passwordPlaceholder:"Parool", usernamePlaceholder:"Kasutajanimi", confirmPasswordPlaceholder:"Kinnita parool", rememberMe:"Mäleta mind", forgotPassword:"Unustasid parooli?", signInBtn:"Logi sisse", orContinue:"või jätka", newHere:"Uus?", createAccount:"Loo konto", registerTitle:"Loo konto", registerSubtitle:"Liitu täna", createAccountBtn:"Loo konto", alreadyHave:"Juba konto?", signInLink:"Logi sisse", logoutBtn:"Logi välja", loadingSub:"VALMISTAME POODI" }
+        // ===== DATA STORAGE =====
+        const DB = {
+            users: JSON.parse(localStorage.getItem('qwilzy_users')) || [
+                { id: 1, email: 'admin@qwilzy.lt', password: 'admin123', name: 'Admin', role: 'admin', status: 'active' }
+            ],
+            products: JSON.parse(localStorage.getItem('qwilzy_products')) || [],
+            categories: JSON.parse(localStorage.getItem('qwilzy_categories')) || [
+                { id: 1, name: 'Žaidimai' },
+                { id: 2, name: 'Programinė įranga' },
+                { id: 3, name: 'Paskyros' }
+            ],
+            cart: JSON.parse(localStorage.getItem('qwilzy_cart')) || [],
+            appeals: JSON.parse(localStorage.getItem('qwilzy_appeals')) || [],
+            currentUser: JSON.parse(localStorage.getItem('qwilzy_current_user')) || null
         };
 
-        const langNames = { lt:"Lietuvių", de:"Deutsch", en:"English", it:"Italiano", ru:"Русский", fr:"Français", lv:"Latviešu", et:"Eesti" };
-        let curLang = 'lt';
-
-        // ===== LOADING ANIMATION =====
-        const titleText = "DISNEY AKCIJOS";
-        const titleEl = document.getElementById('loadingTitle');
-        const subtitleEl = document.getElementById('loadingSubtitle');
-        const barFill = document.getElementById('loadingBarFill');
-        const percentEl = document.getElementById('loadingPercent');
-
-        function animateTitle() {
-            titleEl.innerHTML = '';
-            for (let i = 0; i < titleText.length; i++) {
-                const span = document.createElement('span');
-                span.className = 'char' + (i >= 7 ? ' dim' : '');
-                span.textContent = titleText[i] === ' ' ? '\u00A0' : titleText[i];
-                span.style.animationDelay = (i * 0.08) + 's';
-                titleEl.appendChild(span);
-            }
+        function saveDB() {
+            localStorage.setItem('qwilzy_users', JSON.stringify(DB.users));
+            localStorage.setItem('qwilzy_products', JSON.stringify(DB.products));
+            localStorage.setItem('qwilzy_categories', JSON.stringify(DB.categories));
+            localStorage.setItem('qwilzy_cart', JSON.stringify(DB.cart));
+            localStorage.setItem('qwilzy_appeals', JSON.stringify(DB.appeals));
+            localStorage.setItem('qwilzy_current_user', JSON.stringify(DB.currentUser));
         }
 
-        function animateSubtitle(text) {
-            subtitleEl.textContent = '';
-            let idx = 0;
-            const interval = setInterval(() => {
-                subtitleEl.textContent += text[idx];
-                idx++;
-                if (idx >= text.length) clearInterval(interval);
-            }, 40);
+        // ===== STATE =====
+        let currentLang = 'lt';
+        let currentCurrency = 'EUR';
+        let isRegisterMode = false;
+
+        // ===== TRANSLATIONS =====
+        const translations = {
+            lt: {
+                pageTitle: 'Prekės',
+                login: 'Prisijungti',
+                logout: 'Atsijungti',
+                admin: 'Admin',
+                cart: 'Krepšelis',
+                addToCart: 'Į krepšelį',
+                loginToBuy: 'Prisijunkite norėdami pirkti',
+                blockedMessage: 'Jūsų paskyrą užblokavo administratorius. Susisiekite su savininku.',
+                frozenMessage: 'Jūsų paskyra užšaldyta. Susisiekite su administratoriumi.',
+                appealTitle: 'Pateikti skundą',
+                punishment: 'Bausmė',
+                date: 'Data',
+                description: 'Aprašymas',
+                submit: 'Pateikti'
+            },
+            en: {
+                pageTitle: 'Products',
+                login: 'Login',
+                logout: 'Logout',
+                admin: 'Admin',
+                cart: 'Cart',
+                addToCart: 'Add to Cart',
+                loginToBuy: 'Login to buy',
+                blockedMessage: 'Your account has been blocked by an administrator. Contact the owner.',
+                frozenMessage: 'Your account has been frozen. Contact the administrator.',
+                appealTitle: 'Submit Appeal',
+                punishment: 'Punishment',
+                date: 'Date',
+                description: 'Description',
+                submit: 'Submit'
+            },
+            de: {
+                pageTitle: 'Produkte',
+                login: 'Anmelden',
+                logout: 'Abmelden',
+                admin: 'Admin',
+                cart: 'Warenkorb',
+                addToCart: 'In den Warenkorb',
+                loginToBuy: 'Anmelden zum Kaufen',
+                blockedMessage: 'Ihr Konto wurde von einem Administrator gesperrt. Kontaktieren Sie den Besitzer.',
+                frozenMessage: 'Ihr Konto wurde eingefroren. Kontaktieren Sie den Administrator.',
+                appealTitle: 'Beschwerde einreichen',
+                punishment: 'Strafe',
+                date: 'Datum',
+                description: 'Beschreibung',
+                submit: 'Einreichen'
+            }
+        };
+
+        // ===== INITIALIZATION =====
+        window.onload = function() {
+            checkUserStatus();
+            loadProducts();
+            updateUI();
+            
+            // Check if first time - create admin
+            if (DB.users.length === 1 && DB.users[0].email === 'admin@qwilzy.lt') {
+                showFirstTimeAdmin();
+            }
+        };
+
+        function showFirstTimeAdmin() {
+            alert('Pirmasis prisijungimas! Sukurta admin paskyra:\nEl. paštas: admin@qwilzy.lt\nSlaptažodis: admin123\n\nPakeiskite slaptažodį admin panelėje!');
         }
 
-        function animateProgress() {
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.random() * 8 + 2;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        document.getElementById('loadingScreen').classList.add('hidden');
-                        document.getElementById('mainWebsite').classList.add('visible');
-                        initCanvas();
-                        checkLoggedIn();
-                    }, 600);
-                }
-                barFill.style.width = progress + '%';
-                percentEl.textContent = Math.floor(progress) + '%';
-            }, 150);
-        }
-
-        setTimeout(() => {
-            animateTitle();
-            setTimeout(() => {
-                animateSubtitle(T[curLang].loadingSub);
-                animateProgress();
-            }, 800);
-        }, 300);
-
-        // ===== AUTH FUNCTIONS =====
-        function openAuth(type) {
-            document.getElementById('authOverlay').classList.add('show');
-            switchAuth(type);
-        }
-
-        function closeAuth() {
-            document.getElementById('authOverlay').classList.remove('show');
-            document.getElementById('loginError').classList.remove('show');
-            document.getElementById('registerError').classList.remove('show');
-            document.getElementById('registerSuccess').classList.remove('show');
-        }
-
-        function switchAuth(type) {
-            if (type === 'login') {
-                document.getElementById('loginForm').style.display = 'block';
-                document.getElementById('registerForm').style.display = 'none';
-            } else {
-                document.getElementById('loginForm').style.display = 'none';
-                document.getElementById('registerForm').style.display = 'block';
-            }
-            document.getElementById('loginError').classList.remove('show');
-            document.getElementById('registerError').classList.remove('show');
-            document.getElementById('registerSuccess').classList.remove('show');
-        }
-
-        function togglePassword(inputId, icon) {
-            const input = document.getElementById(inputId);
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.textContent = '';
-            } else {
-                input.type = 'password';
-                icon.textContent = '️';
-            }
-        }
-
-        function handleLogin() {
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            const errorEl = document.getElementById('loginError');
-
-            if (!email || !password) {
-                errorEl.textContent = curLang === 'lt' ? 'Prašome užpildyti visus laukus' : 'Please fill in all fields';
-                errorEl.classList.add('show');
-                return;
-            }
-
-            if (!email.includes('@')) {
-                errorEl.textContent = curLang === 'lt' ? 'Neteisingas el. pašto formatas' : 'Invalid email format';
-                errorEl.classList.add('show');
-                return;
-            }
-
-            const users = JSON.parse(localStorage.getItem('disneyUsers') || '[]');
-            const user = users.find(u => u.email === email && u.password === password);
-
-            if (!user) {
-                errorEl.textContent = curLang === 'lt' ? 'Neteisingas el. paštas arba slaptažodis' : 'Invalid email or password';
-                errorEl.classList.add('show');
-                return;
-            }
-
-            localStorage.setItem('disneyCurrentUser', JSON.stringify(user));
-            closeAuth();
-            openDashboard(user);
-        }
-
-        function handleRegister() {
-            const username = document.getElementById('regUsername').value.trim();
-            const email = document.getElementById('regEmail').value.trim();
-            const password = document.getElementById('regPassword').value;
-            const confirmPassword = document.getElementById('regConfirmPassword').value;
-            const errorEl = document.getElementById('registerError');
-            const successEl = document.getElementById('registerSuccess');
-
-            errorEl.classList.remove('show');
-            successEl.classList.remove('show');
-
-            if (!username || !email || !password || !confirmPassword) {
-                errorEl.textContent = curLang === 'lt' ? 'Prašome užpildyti visus laukus' : 'Please fill in all fields';
-                errorEl.classList.add('show');
-                return;
-            }
-
-            if (!email.includes('@')) {
-                errorEl.textContent = curLang === 'lt' ? 'Neteisingas el. pašto formatas' : 'Invalid email format';
-                errorEl.classList.add('show');
-                return;
-            }
-
-            if (password.length < 6) {
-                errorEl.textContent = curLang === 'lt' ? 'Slaptažodis turi būti bent 6 simboliai' : 'Password must be at least 6 characters';
-                errorEl.classList.add('show');
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                errorEl.textContent = curLang === 'lt' ? 'Slaptažodžiai nesutampa' : 'Passwords do not match';
-                errorEl.classList.add('show');
-                return;
-            }
-
-            const users = JSON.parse(localStorage.getItem('disneyUsers') || '[]');
-            if (users.find(u => u.email === email)) {
-                errorEl.textContent = curLang === 'lt' ? 'Šis el. paštas jau registruotas' : 'Email already registered';
-                errorEl.classList.add('show');
-                return;
-            }
-
-            const newUser = {
-                username: username,
-                email: email,
-                password: password,
-                createdAt: new Date().toISOString()
-            };
-
-            users.push(newUser);
-            localStorage.setItem('disneyUsers', JSON.stringify(users));
-            localStorage.setItem('disneyCurrentUser', JSON.stringify(newUser));
-
-            successEl.textContent = curLang === 'lt' ? '✓ Paskyra sėkmingai sukurta! Perkeliam...' : '✓ Account created successfully!';
-            successEl.classList.add('show');
-
-            setTimeout(() => {
-                closeAuth();
-                openDashboard(newUser);
-            }, 1200);
-        }
-
-        function openDashboard(user) {
-            document.getElementById('dashUserName').textContent = user.username;
-            document.getElementById('dashUserEmail').textContent = user.email;
-            document.getElementById('dashUserAvatar').textContent = user.username.charAt(0).toUpperCase();
-            document.getElementById('dashboardView').classList.add('show');
-        }
-
-        function handleLogout() {
-            localStorage.removeItem('disneyCurrentUser');
-            document.getElementById('dashboardView').classList.remove('show');
-            updateAuthButton();
-        }
-
-        function checkLoggedIn() {
-            const currentUser = localStorage.getItem('disneyCurrentUser');
-            if (currentUser) {
-                const user = JSON.parse(currentUser);
-                openDashboard(user);
-            }
-            updateAuthButton();
-        }
-
-        function updateAuthButton() {
-            const currentUser = localStorage.getItem('disneyCurrentUser');
-            const authBtn = document.getElementById('authBtnNav');
-
-            if (currentUser) {
-                const user = JSON.parse(currentUser);
-                authBtn.innerHTML = `<div class="user-avatar-small">${user.username.charAt(0).toUpperCase()}</div><span>${user.username}</span>`;
-                authBtn.onclick = () => document.getElementById('dashboardView').classList.add('show');
-            } else {
-                authBtn.innerHTML = `<span>👤</span><span data-i18n="authBtn">${T[curLang].authBtn || 'Sign In'}</span>`;
-                authBtn.onclick = () => openAuth('login');
-            }
-        }
-
-        // ===== NAVIGATION =====
-        function navTo(section) {
-            document.querySelectorAll('.nav-center-item').forEach(item => {
-                item.classList.remove('active');
+        // ===== NAVIGATION & DROPDOWNS =====
+        function toggleDropdown(id) {
+            document.querySelectorAll('.dropdown').forEach(d => {
+                if (d.id !== id) d.classList.remove('active');
             });
-
-            if (section === 'home') {
-                document.querySelector('[data-nav="home"]').classList.add('active');
-                document.getElementById('mainWebsite').scrollTo({ top: 0, behavior: 'smooth' });
-            } else if (section === 'about') {
-                document.querySelector('[data-nav="about"]').classList.add('active');
-                openAbout();
-            } else if (section === 'contact') {
-                document.querySelector('[data-nav="contact"]').classList.add('active');
-                const footer = document.getElementById('footerSection');
-                const mainSite = document.getElementById('mainWebsite');
-                mainSite.scrollTo({ top: footer.offsetTop - 100, behavior: 'smooth' });
-            }
-        }
-
-        // ===== MODALS =====
-        function openModal(type) {
-            const modalMap = { 'rules': 'modalRules', 'buy': 'modalBuy', 'use': 'modalUse', 'manage': 'modalManage' };
-            const modalId = modalMap[type];
-            if (modalId) document.getElementById(modalId).classList.add('show');
-        }
-
-        function closeModal(type) {
-            const modalMap = { 'rules': 'modalRules', 'buy': 'modalBuy', 'use': 'modalUse', 'manage': 'modalManage' };
-            const modalId = modalMap[type];
-            if (modalId) document.getElementById(modalId).classList.remove('show');
-        }
-
-        document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            overlay.addEventListener('click', function(e) {
-                if (e.target === this) this.classList.remove('show');
-            });
-        });
-
-        function openAbout() { document.getElementById('aboutOverlay').classList.add('show'); }
-        function closeAbout() {
-            document.getElementById('aboutOverlay').classList.remove('show');
-            document.querySelector('[data-nav="home"]').classList.add('active');
-            document.querySelector('[data-nav="about"]').classList.remove('active');
-        }
-        document.getElementById('aboutOverlay').addEventListener('click', function(e) {
-            if (e.target === this) closeAbout();
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeAbout();
-                closeAuth();
-                document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('show'));
-            }
-        });
-
-        // ===== LANGUAGE =====
-        function toggleLangDropdown() {
-            document.getElementById('langDropdownNav').classList.toggle('show');
+            document.getElementById(id).classList.toggle('active');
         }
 
         function changeLang(lang) {
-            curLang = lang;
-            const t = T[lang];
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (t[key]) el.textContent = t[key];
+            currentLang = lang;
+            document.getElementById('currentLang').textContent = lang.toUpperCase();
+            document.querySelectorAll('#langDropdown .dropdown-item').forEach((item, idx) => {
+                item.classList.toggle('active', idx === ['lt', 'de', 'en'].indexOf(lang));
             });
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                if (t[key]) el.placeholder = t[key];
-            });
-            document.getElementById('currentLangNav').textContent = langNames[lang];
-            document.querySelectorAll('.lang-opt').forEach(o => {
-                o.classList.toggle('selected', o.getAttribute('data-lang') === lang);
-            });
-            document.getElementById('langDropdownNav').classList.remove('show');
-            updateDateTime();
-            updateAuthButton();
+            updateUI();
+            document.getElementById('langDropdown').classList.remove('active');
         }
 
-        document.addEventListener('click', e => {
-            if (!e.target.closest('#langBtnNav')) {
-                document.getElementById('langDropdownNav').classList.remove('show');
-            }
-        });
-
-        // ===== TIME =====
-        function updateDateTime() {
-            const now = new Date();
-            const opts = { timeZone: 'Europe/Vilnius' };
-            const timeStr = new Intl.DateTimeFormat('lt-LT', { ...opts, hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false }).format(now);
-            const dateStr = new Intl.DateTimeFormat('lt-LT', { ...opts, year:'numeric', month:'long', day:'numeric', weekday:'long' }).format(now);
-            document.getElementById('timeClock').textContent = timeStr;
-            document.getElementById('timeDate').textContent = dateStr;
+        function changeCurrency(currency) {
+            currentCurrency = currency;
+            document.getElementById('currentCurrency').textContent = currency;
+            document.querySelectorAll('#currencyDropdown .dropdown-item').forEach((item, idx) => {
+                item.classList.toggle('active', idx === ['EUR', 'USD'].indexOf(currency));
+            });
+            loadProducts();
+            document.getElementById('currencyDropdown').classList.remove('active');
         }
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
 
-        // ===== NETWORK CANVAS =====
-        function initCanvas() {
-            const canvas = document.getElementById('networkCanvas');
-            const ctx = canvas.getContext('2d');
-            let w, h, nodes = [], mouse = { x: -1000, y: -1000 };
-
-            function resize() {
-                w = canvas.width = window.innerWidth;
-                h = canvas.height = window.innerHeight;
+        // ===== AUTHENTICATION =====
+        function openAuthModal() {
+            if (DB.currentUser) {
+                logout();
+                return;
             }
-            resize();
-            window.addEventListener('resize', resize);
+            document.getElementById('authModal').classList.add('active');
+        }
 
-            const nodeCount = 120;
-            for (let i = 0; i < nodeCount; i++) {
-                const theta = Math.random() * Math.PI * 2;
-                const phi = Math.acos(2 * Math.random() - 1);
-                const r = 200 + Math.random() * 150;
-                nodes.push({ x: 0, y: 0, z: 0, theta: theta, phi: phi, r: r, size: Math.random() * 2 + 1 });
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.remove('active');
+        }
+
+        function toggleAuthMode() {
+            isRegisterMode = !isRegisterMode;
+            document.getElementById('authModalTitle').textContent = isRegisterMode ? 'Registracija' : 'Prisijungimas';
+            document.getElementById('authSubmitBtn').textContent = isRegisterMode ? 'Registruotis' : 'Prisijungti';
+            document.getElementById('registerFields').style.display = isRegisterMode ? 'block' : 'none';
+            document.getElementById('authToggleText').textContent = isRegisterMode ? 'Jau turite paskyrą?' : 'Neturite paskyros?';
+            document.getElementById('authToggleLink').textContent = isRegisterMode ? 'Prisijungti' : 'Registruotis';
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            
+            if (isRegisterMode) {
+                const name = document.getElementById('authName').value;
+                // Check if user exists
+                if (DB.users.find(u => u.email === email)) {
+                    alert('Vartotojas su tokiu el. paštu jau egzistuoja!');
+                    return;
+                }
+                // Create new user
+                const newUser = {
+                    id: Date.now(),
+                    email,
+                    password,
+                    name: name || email.split('@')[0],
+                    role: 'user',
+                    status: 'active'
+                };
+                DB.users.push(newUser);
+                DB.currentUser = newUser;
+                saveDB();
+                alert('Registracija sėkminga!');
+            } else {
+                // Login
+                const user = DB.users.find(u => u.email === email && u.password === password);
+                if (!user) {
+                    alert('Neteisingas el. paštas arba slaptažodis!');
+                    return;
+                }
+                DB.currentUser = user;
+                saveDB();
             }
+            
+            closeAuthModal();
+            checkUserStatus();
+            updateUI();
+            loadProducts();
+        }
 
-            function draw() {
-                ctx.clearRect(0, 0, w, h);
-                const cx = w * 0.62;
-                const cy = h * 0.42;
+        function logout() {
+            DB.currentUser = null;
+            saveDB();
+            updateUI();
+            loadProducts();
+            document.getElementById('banScreen').classList.remove('active');
+        }
 
-                nodes.forEach(n => {
-                    n.theta += 0.002;
-                    n.phi += 0.001;
-                    n.x = cx + n.r * Math.sin(n.phi) * Math.cos(n.theta);
-                    n.y = cy + n.r * Math.sin(n.phi) * Math.sin(n.theta) * 0.55 - 30;
-                    n.z = n.r * Math.cos(n.phi);
+        function updateUI() {
+            const t = translations[currentLang];
+            const authBtn = document.getElementById('authBtn');
+            const authText = document.getElementById('authText');
+            const adminBtn = document.getElementById('adminBtn');
+            
+            if (DB.currentUser) {
+                authText.textContent = t.logout;
+                authBtn.classList.remove('primary');
+                if (DB.currentUser.role === 'admin') {
+                    adminBtn.classList.remove('hidden');
+                }
+            } else {
+                authText.textContent = t.login;
+                authBtn.classList.add('primary');
+                adminBtn.classList.add('hidden');
+            }
+            
+            document.getElementById('pageTitle').textContent = t.pageTitle;
+            updateCartCount();
+        }
 
-                    const dx = mouse.x - n.x;
-                    const dy = mouse.y - n.y;
-                    const dist = Math.sqrt(dx*dx + dy*dy);
-                    if (dist < 150) {
-                        n.x -= dx * 0.02;
-                        n.y -= dy * 0.02;
-                    }
+        // ===== USER STATUS CHECK =====
+        function checkUserStatus() {
+            if (!DB.currentUser) return;
+            
+            const user = DB.users.find(u => u.id === DB.currentUser.id);
+            if (!user) {
+                logout();
+                return;
+            }
+            
+            DB.currentUser = user; // Update current user data
+            
+            if (user.status === 'blocked') {
+                document.getElementById('banScreen').classList.add('active');
+                document.getElementById('banTitle').textContent = 'Jūsų paskyra užblokuota';
+                document.getElementById('banMessage').textContent = translations[currentLang].blockedMessage;
+            } else if (user.status === 'frozen') {
+                document.getElementById('banScreen').classList.add('active');
+                document.getElementById('banTitle').textContent = 'Jūsų paskyra užšaldyta';
+                document.getElementById('banMessage').textContent = translations[currentLang].frozenMessage;
+            } else {
+                document.getElementById('banScreen').classList.remove('active');
+            }
+        }
+
+        // ===== PRODUCTS =====
+        function loadProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+            
+            if (DB.products.length === 0) {
+                grid.innerHTML = '<p style="color: rgba(255,255,255,0.5); text-align: center; grid-column: 1/-1;">Prekių nėra. Administratorius turi pridėti prekes per admin panelį.</p>';
+                return;
+            }
+            
+            DB.products.forEach(product => {
+                const category = DB.categories.find(c => c.id === product.categoryId);
+                const price = currentCurrency === 'USD' ? (product.price * 1.1).toFixed(2) : product.price.toFixed(2);
+                const currencySymbol = currentCurrency === 'USD' ? '$' : '€';
+                
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-image">${product.icon || '📦'}</div>
+                    <div class="product-info">
+                        <div class="product-category">${category ? category.name : 'Kita'}</div>
+                        <div class="product-title">${product.name}</div>
+                        <div class="product-description">${product.description}</div>
+                        <div class="product-footer">
+                            <div class="product-price">${price} ${currencySymbol}</div>
+                            ${DB.currentUser && DB.currentUser.status === 'active' 
+                                ? `<button class="add-to-cart-btn" onclick="addToCart(${product.id})">${translations[currentLang].addToCart}</button>`
+                                : `<button class="add-to-cart-btn" disabled>${translations[currentLang].loginToBuy}</button>`
+                            }
+                        </div>
+                        ${!DB.currentUser ? '<div class="login-prompt">Prisijunkite norėdami pirkti</div>' : ''}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // ===== CART =====
+        function addToCart(productId) {
+            if (!DB.currentUser || DB.currentUser.status !== 'active') {
+                alert('Prisijunkite norėdami pridėti į krepšelį!');
+                return;
+            }
+            
+            const product = DB.products.find(p => p.id === productId);
+            const existingItem = DB.cart.find(item => item.productId === productId && item.userId === DB.currentUser.id);
+            
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                DB.cart.push({
+                    userId: DB.currentUser.id,
+                    productId: productId,
+                    quantity: 1
                 });
+            }
+            
+            saveDB();
+            updateCartCount();
+            alert(`${product.name} pridėta į krepšelį!`);
+        }
 
-                for (let i = 0; i < nodes.length; i++) {
-                    for (let j = i + 1; j < nodes.length; j++) {
-                        const dx = nodes[i].x - nodes[j].x;
-                        const dy = nodes[i].y - nodes[j].y;
-                        const dist = Math.sqrt(dx*dx + dy*dy);
-                        if (dist < 100) {
-                            const alpha = (1 - dist / 100) * 0.15;
-                            ctx.beginPath();
-                            ctx.moveTo(nodes[i].x, nodes[i].y);
-                            ctx.lineTo(nodes[j].x, nodes[j].y);
-                            ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
-                            ctx.lineWidth = 0.5;
-                            ctx.stroke();
-                        }
+        function updateCartCount() {
+            if (!DB.currentUser) {
+                document.getElementById('cartCount').classList.add('hidden');
+                return;
+            }
+            
+            const userCart = DB.cart.filter(item => item.userId === DB.currentUser.id);
+            const count = userCart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            const cartCount = document.getElementById('cartCount');
+            if (count > 0) {
+                cartCount.textContent = count;
+                cartCount.classList.remove('hidden');
+            } else {
+                cartCount.classList.add('hidden');
+            }
+        }
+
+        function openCart() {
+            if (!DB.currentUser) {
+                alert('Prisijunkite norėdami peržiūrėti krepšelį!');
+                return;
+            }
+            alert('Krepšelio funkcionalumas bus pridėtas vėliau!');
+        }
+
+        // ===== ADMIN PANEL =====
+        function openAdminPanel() {
+            if (!DB.currentUser || DB.currentUser.role !== 'admin') {
+                alert('Neturite teisės peržiūrėti admin panelio!');
+                return;
+            }
+            document.getElementById('adminModal').classList.add('active');
+            showAdminTab('products');
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminModal').classList.remove('active');
+        }
+
+        function showAdminTab(tab) {
+            document.querySelectorAll('.admin-menu-item').forEach(item => item.classList.remove('active'));
+            event.target.closest('.admin-menu-item').classList.add('active');
+            
+            const content = document.getElementById('adminContent');
+            
+            switch(tab) {
+                case 'products':
+                    showProductsTab(content);
+                    break;
+                case 'categories':
+                    showCategoriesTab(content);
+                    break;
+                case 'users':
+                    showUsersTab(content);
+                    break;
+                case 'appeals':
+                    showAppealsTab(content);
+                    break;
+            }
+        }
+
+        function showProductsTab(content) {
+            let html = `
+                <h2 style="margin-bottom: 20px;">Prekių valdymas</h2>
+                <button class="btn-submit" onclick="showAddProductForm()" style="margin-bottom: 20px; width: auto; padding: 12px 24px;">+ Pridėti prekę</button>
+                <div id="addProductForm" style="display: none; margin-bottom: 30px; padding: 20px; background: rgba(255,255,255,0.03); border-radius: 10px;">
+                    <form onsubmit="addProduct(event)">
+                        <div class="form-group">
+                            <label class="form-label">Pavadinimas</label>
+                            <input type="text" class="form-input" id="productName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Kategorija</label>
+                            <select class="form-select" id="productCategory" required>
+                                ${DB.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Kaina (EUR)</label>
+                            <input type="number" step="0.01" class="form-input" id="productPrice" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Aprašymas</label>
+                            <textarea class="form-textarea" id="productDescription" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Ikona (emoji)</label>
+                            <input type="text" class="form-input" id="productIcon" placeholder="📦" value="📦">
+                        </div>
+                        <button type="submit" class="btn-submit">Pridėti</button>
+                    </form>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Pavadinimas</th>
+                            <th>Kategorija</th>
+                            <th>Kaina</th>
+                            <th>Veiksmai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${DB.products.map(p => {
+                            const cat = DB.categories.find(c => c.id === p.categoryId);
+                            return `
+                                <tr>
+                                    <td>${p.icon || ''} ${p.name}</td>
+                                    <td>${cat ? cat.name : 'Kita'}</td>
+                                    <td>${p.price.toFixed(2)} €</td>
+                                    <td>
+                                        <button class="action-btn block" onclick="deleteProduct(${p.id})">Ištrinti</button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+            content.innerHTML = html;
+        }
+
+        function showAddProductForm() {
+            document.getElementById('addProductForm').style.display = 'block';
+        }
+
+        function addProduct(e) {
+            e.preventDefault();
+            const product = {
+                id: Date.now(),
+                name: document.getElementById('productName').value,
+                categoryId: parseInt(document.getElementById('productCategory').value),
+                price: parseFloat(document.getElementById('productPrice').value),
+                description: document.getElementById('productDescription').value,
+                icon: document.getElementById('productIcon').value || '📦'
+            };
+            DB.products.push(product);
+            saveDB();
+            showProductsTab(document.getElementById('adminContent'));
+            loadProducts();
+        }
+
+        function deleteProduct(id) {
+            if (confirm('Ar tikrai norite ištrinti šią prekę?')) {
+                DB.products = DB.products.filter(p => p.id !== id);
+                saveDB();
+                showProductsTab(document.getElementById('adminContent'));
+                loadProducts();
+            }
+        }
+
+        function showCategoriesTab(content) {
+            let html = `
+                <h2 style="margin-bottom: 20px;">Kategorijų valdymas</h2>
+                <div style="margin-bottom: 30px; padding: 20px; background: rgba(255,255,255,0.03); border-radius: 10px;">
+                    <form onsubmit="addCategory(event)">
+                        <div class="form-group">
+                            <label class="form-label">Kategorijos pavadinimas</label>
+                            <input type="text" class="form-input" id="categoryName" required>
+                        </div>
+                        <button type="submit" class="btn-submit">Pridėti kategoriją</button>
+                    </form>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Pavadinimas</th>
+                            <th>Prekių skaičius</th>
+                            <th>Veiksmai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${DB.categories.map(c => {
+                            const count = DB.products.filter(p => p.categoryId === c.id).length;
+                            return `
+                                <tr>
+                                    <td>${c.name}</td>
+                                    <td>${count} prekės</td>
+                                    <td>
+                                        <button class="action-btn block" onclick="deleteCategory(${c.id})">Ištrinti</button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+            content.innerHTML = html;
+        }
+
+        function addCategory(e) {
+            e.preventDefault();
+            const category = {
+                id: Date.now(),
+                name: document.getElementById('categoryName').value
+            };
+            DB.categories.push(category);
+            saveDB();
+            showCategoriesTab(document.getElementById('adminContent'));
+        }
+
+        function deleteCategory(id) {
+            if (DB.products.some(p => p.categoryId === id)) {
+                alert('Negalima ištrinti kategorijos, kurioje yra prekių!');
+                return;
+            }
+            if (confirm('Ar tikrai norite ištrinti šią kategoriją?')) {
+                DB.categories = DB.categories.filter(c => c.id !== id);
+                saveDB();
+                showCategoriesTab(document.getElementById('adminContent'));
+            }
+        }
+
+        function showUsersTab(content) {
+            let html = `
+                <h2 style="margin-bottom: 20px;">Vartotojų valdymas</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>El. paštas</th>
+                            <th>Vardas</th>
+                            <th>Slaptažodis</th>
+                            <th>Statusas</th>
+                            <th>Veiksmai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${DB.users.map(u => `
+                            <tr>
+                                <td>${u.id}</td>
+                                <td>${u.email}</td>
+                                <td>${u.name}</td>
+                                <td>${u.password}</td>
+                                <td>
+                                    <span class="status-badge status-${u.status}">
+                                        ${u.status === 'active' ? 'Aktyvus' : u.status === 'blocked' ? 'Užblokuotas' : 'Užšaldytas'}
+                                    </span>
+                                </td>
+                                <td>
+                                    ${u.status === 'active' 
+                                        ? `<button class="action-btn block" onclick="changeUserStatus(${u.id}, 'blocked')">Blokuoti</button>
+                                           <button class="action-btn freeze" onclick="changeUserStatus(${u.id}, 'frozen')">Užšaldyti</button>`
+                                        : `<button class="action-btn unblock" onclick="changeUserStatus(${u.id}, 'active')">Atblokuoti</button>`
+                                    }
+                                    <button class="action-btn" onclick="changeUserPassword(${u.id})" style="background: rgba(255,255,255,0.1); color: #fff;">Keisti slaptažodį</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            content.innerHTML = html;
+        }
+
+        function changeUserStatus(userId, status) {
+            const user = DB.users.find(u => u.id === userId);
+            if (user) {
+                user.status = status;
+                saveDB();
+                showUsersTab(document.getElementById('adminContent'));
+                
+                // If current user changed their own status
+                if (DB.currentUser && DB.currentUser.id === userId) {
+                    checkUserStatus();
+                }
+            }
+        }
+
+        function changeUserPassword(userId) {
+            const newPassword = prompt('Įveskite naują slaptažodį:');
+            if (newPassword) {
+                const user = DB.users.find(u => u.id === userId);
+                if (user) {
+                    user.password = newPassword;
+                    saveDB();
+                    showUsersTab(document.getElementById('adminContent'));
+                    alert('Slaptažodis pakeistas!');
+                }
+            }
+        }
+
+        function showAppealsTab(content) {
+            document.getElementById('appealCount').textContent = DB.appeals.length;
+            
+            let html = `
+                <h2 style="margin-bottom: 20px;">Gauti skundai (${DB.appeals.length})</h2>
+                ${DB.appeals.length === 0 ? '<p style="color: rgba(255,255,255,0.5);">Skundų nėra.</p>' : ''}
+            `;
+            
+            DB.appeals.forEach(appeal => {
+                const user = DB.users.find(u => u.id === appeal.userId);
+                html += `
+                    <div style="padding: 20px; background: rgba(255,255,255,0.03); border-radius: 10px; margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <strong>${user ? user.email : 'Nežinomas vartotojas'}</strong>
+                            <span style="color: rgba(255,255,255,0.5);">${new Date(appeal.date).toLocaleString()}</span>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <strong>Bausmė:</strong> ${appeal.punishment === 'blocked' ? 'Užblokavimas' : 'Užšaldymas'}
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <strong>Aprašymas:</strong><br>
+                            ${appeal.description}
+                        </div>
+                        <button class="action-btn unblock" onclick="resolveAppeal(${appeal.id}, true)">Priimti skundą</button>
+                        <button class="action-btn block" onclick="resolveAppeal(${appeal.id}, false)">Atmesti skundą</button>
+                    </div>
+                `;
+            });
+            
+            content.innerHTML = html;
+        }
+
+        function resolveAppeal(appealId, accepted) {
+            const appeal = DB.appeals.find(a => a.id === appealId);
+            if (appeal) {
+                if (accepted) {
+                    const user = DB.users.find(u => u.id === appeal.userId);
+                    if (user) {
+                        user.status = 'active';
+                        saveDB();
+                        alert('Skundas priimtas! Vartotojas atblokuotas.');
                     }
                 }
-
-                nodes.forEach(n => {
-                    const alpha = 0.3 + (n.z + n.r) / (2 * n.r) * 0.7;
-                    const size = n.size * (0.5 + alpha * 0.5);
-                    ctx.beginPath();
-                    ctx.arc(n.x, n.y, size, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.6})`;
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.arc(n.x, n.y, size * 3, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.05})`;
-                    ctx.fill();
-                });
-
-                requestAnimationFrame(draw);
+                DB.appeals = DB.appeals.filter(a => a.id !== appealId);
+                saveDB();
+                showAppealsTab(document.getElementById('adminContent'));
+                document.getElementById('appealCount').textContent = DB.appeals.length;
             }
-            draw();
-
-            canvas.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-            canvas.addEventListener('mouseleave', () => { mouse.x = -1000; mouse.y = -1000; });
         }
+
+        // ===== APPEAL SYSTEM =====
+        function openAppealModal() {
+            document.getElementById('appealModal').classList.add('active');
+        }
+
+        function closeAppealModal() {
+            document.getElementById('appealModal').classList.remove('active');
+        }
+
+        function submitAppeal(e) {
+            e.preventDefault();
+            
+            if (!DB.currentUser) {
+                alert('Klaida! Bandykite prisijungti iš naujo.');
+                return;
+            }
+            
+            const appeal = {
+                id: Date.now(),
+                userId: DB.currentUser.id,
+                punishment: document.getElementById('appealPunishment').value,
+                date: document.getElementById('appealDate').value,
+                description: document.getElementById('appealDescription').value,
+                status: 'pending'
+            };
+            
+            DB.appeals.push(appeal);
+            saveDB();
+            
+            closeAppealModal();
+            alert('Skundas sėkmingai pateiktas! Administratorius jį peržiūrės.');
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
+            }
+        });
     </script>
 </body>
 </html>
