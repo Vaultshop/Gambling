@@ -101,4 +101,4 @@ process.on('SIGINT', async () => {
   process.exit(0);
 });
 
-client.login(DISCORD_TOKEN);
+client.login(MTU1MTk4NTU3NDQ0ODA3ODk4OQ.GS5HeE.yXhXe2cvRRw8T4oXqKAtOSFHDH6qJStUUNYu3s);
