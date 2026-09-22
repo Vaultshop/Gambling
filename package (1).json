@@ -1,0 +1,16 @@
+{
+  "name": "growroll-rain-bot",
+  "version": "1.0.0",
+  "description": "Discord bot that watches GrowRoll.gg for the next 'rain' event and the current top-paying game, and pings a channel 1 minute before rain starts.",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js",
+    "inspect": "node inspect.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5",
+    "playwright": "^1.48.0"
+  }
+}
